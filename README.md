@@ -39,7 +39,7 @@ func main() {
 
 ## Release a new version
 
-1. Download api-1.json from https://api.shiper.com/v2
+1. Download api-1.json from https://api.shiper.app/v2
 2. run `openapi-down-convert --input "api-1.json" --output spec-3.0.yaml`
 3. manually edit spec-3.0.yaml to remove the "Null" from all oneOf schemas.
 4. run `go generate ./...`
