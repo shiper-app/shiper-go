@@ -1,6 +1,6 @@
 # Shiper Go
 
-Go SDK for the Shiper API
+Go SDK for the Shiper API.
 
 ## Usage
 
@@ -8,27 +8,24 @@ Go SDK for the Shiper API
 package main
 
 import (
-  "context"
-  "log"
+    "context"
+    "log"
 
- shiper "github.com/shiper-app/shiper-go"
+    shiper "github.com/shiper-app/shiper-go"
 )
 
 func main() {
-  client, err := shiper.NewClient(
-    "https://api.shiper.com/v2",
-    shiper.WithToken("YOUR_TOKEN"),
-  )
-  if err != nil {
-    log.Fatal(err)
-  }
+    client, err := shiper.NewClient(shiper.WithToken("YOUR_TOKEN"))
+    if err != nil {
+        log.Fatal(err)
+    }
 
- resp, err := client.ListProjects(context.Background(), nil)
- if err != nil {
-  log.Fatal(err)
- }
+    resp, err := client.ListProjects(context.Background(), nil)
+    if err != nil {
+        log.Fatal(err)
+    }
 
- log.Printf("projects: %d", len(resp.JSON200.Data))
+    log.Printf("projects: %d", len(resp.JSON200.Data))
 }
 ```
 

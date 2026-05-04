@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/shiper-app/shiper-go/internal/genapi"
@@ -11,16 +12,24 @@ import (
 
 var errClientNotInitialized = errors.New("shiper client is not initialized")
 
+const defaultBaseURL = "https://api.shiper.app/v2"
+const envBaseURL = "SHIPER_BASE_URL"
+
 type Client struct {
 	raw *genapi.ClientWithResponses
 }
 
-func NewClient(baseURL string, opts ...Option) (*Client, error) {
+func NewClient(opts ...Option) (*Client, error) {
 	config := clientOptions{}
 	for _, opt := range opts {
 		if opt != nil {
 			opt(&config)
 		}
+	}
+
+	baseURL := strings.TrimSpace(os.Getenv(envBaseURL))
+	if baseURL == "" {
+		baseURL = defaultBaseURL
 	}
 
 	rawClient, err := genapi.NewClientWithResponses(baseURL, config.clientOptions...)
