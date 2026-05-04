@@ -1,0 +1,1976 @@
+{
+  "servers": [
+    {
+      "url": "http://localhost:5000/v2"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "apiKey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key"
+      },
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "User",
+      "description": "API endpoints for users"
+    },
+    {
+      "name": "Project",
+      "description": "API endpoints for projects"
+    },
+    {
+      "name": "Project ACL",
+      "description": "API endpoints for project access control lists"
+    },
+    {
+      "name": "Framework",
+      "description": "API endpoints for frameworks"
+    }
+  ],
+  "security": [
+    {
+      "apiKey": []
+    },
+    {
+      "bearerAuth": []
+    }
+  ],
+  "info": {
+    "title": "Shiper API",
+    "version": "2.0.0",
+    "description": "API documentation for Shiper",
+    "contact": {
+      "name": "Shiper",
+      "url": "https://shiper.app",
+      "email": "support@shiper.app"
+    },
+    "termsOfService": "https://docs.shiper.app/terms"
+  },
+  "openapi": "3.1.1",
+  "paths": {
+    "/users": {
+      "get": {
+        "operationId": "user.list",
+        "summary": "List Users",
+        "description": "Get a list of users",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "installations": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "githubInstallationId": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "githubInstallationId"
+                              ]
+                            }
+                          },
+                          "blocked": {
+                            "type": "boolean"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "image": {
+                            "type": "string"
+                          },
+                          "acceptedTerms": {
+                            "type": "boolean"
+                          },
+                          "stripeSubscriptionId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "role": {
+                            "enum": [
+                              "user",
+                              "admin"
+                            ]
+                          },
+                          "userId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          }
+                        },
+                        "required": [
+                          "installations",
+                          "blocked",
+                          "name",
+                          "email",
+                          "image",
+                          "acceptedTerms",
+                          "stripeSubscriptionId",
+                          "role",
+                          "userId"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "user.get",
+        "summary": "Get a User",
+        "description": "Get a user by ID",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "installations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "githubInstallationId": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "githubInstallationId"
+                        ]
+                      }
+                    },
+                    "blocked": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string"
+                    },
+                    "acceptedTerms": {
+                      "type": "boolean"
+                    },
+                    "stripeSubscriptionId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "role": {
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
+                    "userId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    }
+                  },
+                  "required": [
+                    "installations",
+                    "blocked",
+                    "name",
+                    "email",
+                    "image",
+                    "acceptedTerms",
+                    "stripeSubscriptionId",
+                    "role",
+                    "userId"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "user.me",
+        "summary": "Get Current User",
+        "description": "Get the currently authenticated user",
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "installations": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "githubInstallationId": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "githubInstallationId"
+                        ]
+                      }
+                    },
+                    "blocked": {
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "image": {
+                      "type": "string"
+                    },
+                    "acceptedTerms": {
+                      "type": "boolean"
+                    },
+                    "stripeSubscriptionId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "role": {
+                      "enum": [
+                        "user",
+                        "admin"
+                      ]
+                    },
+                    "userId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    }
+                  },
+                  "required": [
+                    "installations",
+                    "blocked",
+                    "name",
+                    "email",
+                    "image",
+                    "acceptedTerms",
+                    "stripeSubscriptionId",
+                    "role",
+                    "userId"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/search": {
+      "get": {
+        "operationId": "user.search",
+        "summary": "Search Users",
+        "description": "Search users by name or email",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 255
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "userId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "email": {
+                            "type": "string"
+                          },
+                          "image": {
+                            "type": "string"
+                          },
+                          "blocked": {
+                            "type": "boolean"
+                          },
+                          "isSubscriber": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "userId",
+                          "name",
+                          "email",
+                          "image",
+                          "blocked",
+                          "isSubscriber"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/ping": {
+      "post": {
+        "operationId": "admin.ping",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects": {
+      "post": {
+        "operationId": "project.create",
+        "summary": "Create a Project",
+        "description": "Create a new project",
+        "tags": [
+          "Project"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "displayName": {
+                        "type": "string"
+                      },
+                      "port": {
+                        "type": "number",
+                        "minimum": 1,
+                        "maximum": 65535
+                      },
+                      "basePath": {
+                        "type": "string"
+                      },
+                      "framework": {
+                        "type": "string"
+                      },
+                      "repository": {
+                        "type": "string"
+                      },
+                      "connectorInstanceId": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "targetType": {
+                        "type": "string"
+                      },
+                      "productionResourceLimit": {
+                        "type": "object",
+                        "properties": {
+                          "cpu": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "memory": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "cpu",
+                          "memory"
+                        ]
+                      },
+                      "previewResourceLimit": {
+                        "type": "object",
+                        "properties": {
+                          "cpu": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "memory": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "cpu",
+                          "memory"
+                        ]
+                      },
+                      "buildParameters": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "key": {
+                              "type": "string"
+                            },
+                            "value": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "boolean"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "key"
+                          ]
+                        }
+                      },
+                      "productionBranch": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "displayName",
+                      "framework",
+                      "repository",
+                      "productionResourceLimit",
+                      "previewResourceLimit"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "activeEnvironments": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "projectId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    }
+                  },
+                  "required": [
+                    "projectId"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "project.list",
+        "summary": "List Projects",
+        "description": "Get a list of projects owned or accessible by the user",
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          },
+          {
+            "name": "enabled",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "projectId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          },
+                          "userId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          },
+                          "displayName": {
+                            "type": "string"
+                          },
+                          "slug": {
+                            "type": "string"
+                          },
+                          "port": {
+                            "type": "number",
+                            "minimum": 1,
+                            "maximum": 65535
+                          },
+                          "basePath": {
+                            "type": "string"
+                          },
+                          "framework": {
+                            "type": "string"
+                          },
+                          "repository": {
+                            "type": "string"
+                          },
+                          "connectorInstanceId": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "targetType": {
+                            "type": "string"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "createdAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "x-native-type": "date"
+                              }
+                            ]
+                          },
+                          "productionResourceLimit": {
+                            "type": "object",
+                            "properties": {
+                              "cpu": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "memory": {
+                                "type": "number",
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "cpu",
+                              "memory"
+                            ]
+                          },
+                          "previewResourceLimit": {
+                            "type": "object",
+                            "properties": {
+                              "cpu": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "memory": {
+                                "type": "number",
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "cpu",
+                              "memory"
+                            ]
+                          },
+                          "buildParameters": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "key": {
+                                  "type": "string"
+                                },
+                                "value": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "boolean"
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "key"
+                              ]
+                            }
+                          },
+                          "productionBranch": {
+                            "type": "string"
+                          },
+                          "activePreviewEnvironments": {
+                            "type": "number"
+                          },
+                          "userName": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "projectId",
+                          "userId",
+                          "displayName",
+                          "slug",
+                          "framework",
+                          "repository",
+                          "enabled",
+                          "createdAt",
+                          "productionResourceLimit",
+                          "previewResourceLimit",
+                          "activePreviewEnvironments",
+                          "userName"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectId}": {
+      "get": {
+        "operationId": "project.get",
+        "summary": "Get a Project",
+        "description": "Get a project by id",
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "projectId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "port": {
+                      "type": "number",
+                      "minimum": 1,
+                      "maximum": 65535
+                    },
+                    "basePath": {
+                      "type": "string"
+                    },
+                    "framework": {
+                      "type": "string"
+                    },
+                    "repository": {
+                      "type": "string"
+                    },
+                    "connectorInstanceId": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "targetType": {
+                      "type": "string"
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "createdAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time",
+                          "x-native-type": "date"
+                        }
+                      ]
+                    },
+                    "productionResourceLimit": {
+                      "type": "object",
+                      "properties": {
+                        "cpu": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "memory": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    },
+                    "previewResourceLimit": {
+                      "type": "object",
+                      "properties": {
+                        "cpu": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "memory": {
+                          "type": "number",
+                          "minimum": 0
+                        }
+                      },
+                      "required": [
+                        "cpu",
+                        "memory"
+                      ]
+                    },
+                    "buildParameters": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "boolean"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "key"
+                        ]
+                      }
+                    },
+                    "productionBranch": {
+                      "type": "string"
+                    },
+                    "activePreviewEnvironments": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "projectId",
+                    "userId",
+                    "displayName",
+                    "slug",
+                    "framework",
+                    "repository",
+                    "enabled",
+                    "createdAt",
+                    "productionResourceLimit",
+                    "previewResourceLimit",
+                    "activePreviewEnvironments"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "project.delete",
+        "summary": "Delete a Project",
+        "description": "Delete a project by id",
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "operationId": "project.update",
+        "summary": "Update a Project",
+        "description": "Update a project by id",
+        "tags": [
+          "Project"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayName": {
+                    "type": "string"
+                  },
+                  "port": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 65535
+                  },
+                  "basePath": {
+                    "type": "string"
+                  },
+                  "previewResourceLimit": {
+                    "type": "object",
+                    "properties": {
+                      "cpu": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "memory": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "cpu",
+                      "memory"
+                    ]
+                  },
+                  "productionResourceLimit": {
+                    "type": "object",
+                    "properties": {
+                      "cpu": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "memory": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    },
+                    "required": [
+                      "cpu",
+                      "memory"
+                    ]
+                  },
+                  "buildParameters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "anyOf": [
+                            {
+                              "type": "string"
+                            },
+                            {
+                              "type": "boolean"
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "key"
+                      ]
+                    }
+                  },
+                  "productionBranch": {
+                    "type": "string"
+                  },
+                  "framework": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/acls": {
+      "post": {
+        "operationId": "project.acl.create",
+        "summary": "Create a Project ACL",
+        "description": "Create a new project acl",
+        "tags": [
+          "Project ACL"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": {
+                    "type": "string",
+                    "pattern": "^[cC][^\\s-]{8,}$"
+                  },
+                  "role": {
+                    "enum": [
+                      "ADMIN",
+                      "WRITE",
+                      "READ"
+                    ]
+                  }
+                },
+                "required": [
+                  "userId",
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "projectId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    }
+                  },
+                  "required": [
+                    "projectId",
+                    "userId"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "project.acl.list",
+        "summary": "List Project ACLs",
+        "description": "Get a list of project acls",
+        "tags": [
+          "Project ACL"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "projectId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          },
+                          "userId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          },
+                          "userName": {
+                            "type": "string"
+                          },
+                          "userEmail": {
+                            "type": "string"
+                          },
+                          "userImage": {
+                            "type": "string"
+                          },
+                          "role": {
+                            "enum": [
+                              "ADMIN",
+                              "WRITE",
+                              "READ"
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "x-native-type": "date"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "x-native-type": "date"
+                          }
+                        },
+                        "required": [
+                          "projectId",
+                          "userId",
+                          "userName",
+                          "userEmail",
+                          "userImage",
+                          "role",
+                          "createdAt",
+                          "updatedAt"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/acls/{userId}": {
+      "get": {
+        "operationId": "project.acl.get",
+        "summary": "Get a Project ACL",
+        "description": "Get a project acl by projectId and userId",
+        "tags": [
+          "Project ACL"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "projectId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    },
+                    "userId": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    },
+                    "userName": {
+                      "type": "string"
+                    },
+                    "userEmail": {
+                      "type": "string"
+                    },
+                    "userImage": {
+                      "type": "string"
+                    },
+                    "role": {
+                      "enum": [
+                        "ADMIN",
+                        "WRITE",
+                        "READ"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "x-native-type": "date"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "x-native-type": "date"
+                    }
+                  },
+                  "required": [
+                    "projectId",
+                    "userId",
+                    "userName",
+                    "userEmail",
+                    "userImage",
+                    "role",
+                    "createdAt",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "project.acl.update",
+        "summary": "Update a Project ACL",
+        "description": "Update a project acl by projectId and userId",
+        "tags": [
+          "Project ACL"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "enum": [
+                      "ADMIN",
+                      "WRITE",
+                      "READ"
+                    ]
+                  }
+                },
+                "required": [
+                  "role"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "project.acl.delete",
+        "summary": "Delete a Project ACL",
+        "description": "Delete a project acl by projectId and userId",
+        "tags": [
+          "Project ACL"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/frameworks/{frameworkId}": {
+      "get": {
+        "operationId": "framework.get",
+        "summary": "Get a Framework",
+        "description": "Get a framework by ID",
+        "tags": [
+          "Framework"
+        ],
+        "parameters": [
+          {
+            "name": "frameworkId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "frameworkId": {
+                      "type": "string"
+                    },
+                    "displayName": {
+                      "type": "string"
+                    },
+                    "buildOptions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "buildOptionId": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "required": {
+                            "type": "boolean"
+                          },
+                          "enum": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "default": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "boolean"
+                              }
+                            ]
+                          },
+                          "type": {
+                            "enum": [
+                              "input",
+                              "checkbox",
+                              "dropdown",
+                              "file",
+                              "folder"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "buildOptionId",
+                          "name",
+                          "description",
+                          "required",
+                          "type"
+                        ]
+                      }
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "resourceTemplates": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "milliCpu": {
+                            "type": "number"
+                          },
+                          "memoryMb": {
+                            "type": "number"
+                          },
+                          "storageMb": {
+                            "type": "number"
+                          },
+                          "displayName": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "milliCpu",
+                          "memoryMb",
+                          "storageMb",
+                          "displayName",
+                          "description"
+                        ]
+                      }
+                    },
+                    "initializationNotice": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "enum": [
+                            "info",
+                            "warning",
+                            "error"
+                          ]
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "title"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "frameworkId",
+                    "displayName",
+                    "buildOptions",
+                    "icon",
+                    "resourceTemplates"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/frameworks": {
+      "get": {
+        "operationId": "framework.list",
+        "summary": "List Frameworks",
+        "description": "Get a list of frameworks",
+        "tags": [
+          "Framework"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "frameworkId": {
+                            "type": "string"
+                          },
+                          "displayName": {
+                            "type": "string"
+                          },
+                          "buildOptions": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "buildOptionId": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "description": {
+                                  "type": "string"
+                                },
+                                "required": {
+                                  "type": "boolean"
+                                },
+                                "enum": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                },
+                                "default": {
+                                  "anyOf": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "boolean"
+                                    }
+                                  ]
+                                },
+                                "type": {
+                                  "enum": [
+                                    "input",
+                                    "checkbox",
+                                    "dropdown",
+                                    "file",
+                                    "folder"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "buildOptionId",
+                                "name",
+                                "description",
+                                "required",
+                                "type"
+                              ]
+                            }
+                          },
+                          "icon": {
+                            "type": "string"
+                          },
+                          "resourceTemplates": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "milliCpu": {
+                                  "type": "number"
+                                },
+                                "memoryMb": {
+                                  "type": "number"
+                                },
+                                "storageMb": {
+                                  "type": "number"
+                                },
+                                "displayName": {
+                                  "type": "string"
+                                },
+                                "description": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                "milliCpu",
+                                "memoryMb",
+                                "storageMb",
+                                "displayName",
+                                "description"
+                              ]
+                            }
+                          },
+                          "initializationNotice": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "enum": [
+                                  "info",
+                                  "warning",
+                                  "error"
+                                ]
+                              },
+                              "message": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "title"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "frameworkId",
+                          "displayName",
+                          "buildOptions",
+                          "icon",
+                          "resourceTemplates"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{projectId}/variables": {
+      "get": {
+        "operationId": "variables.list",
+        "summary": "List Variables",
+        "description": "Get all environment variables for a project",
+        "tags": [
+          "Variables"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "environmentId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "pattern": "^(all|production|preview|[cC][^\\s-]{8,})$"
+            },
+            "allowEmptyValue": true,
+            "allowReserved": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "variables": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "variableId": {
+                            "type": "string",
+                            "pattern": "^[cC][^\\s-]{8,}$"
+                          },
+                          "environmentId": {
+                            "anyOf": [
+                              {
+                                "enum": [
+                                  "all",
+                                  "production",
+                                  "preview"
+                                ]
+                              },
+                              {
+                                "type": "string",
+                                "pattern": "^[cC][^\\s-]{8,}$"
+                              }
+                            ]
+                          },
+                          "name": {
+                            "type": "string",
+                            "maxLength": 191,
+                            "pattern": "[a-zA-Z_]+[a-zA-Z0-9_]*"
+                          },
+                          "value": {
+                            "type": "string",
+                            "maxLength": 8192
+                          }
+                        },
+                        "required": [
+                          "environmentId",
+                          "name",
+                          "value"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "variables"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "variables.upsert",
+        "summary": "Upsert Variables",
+        "description": "Create or update multiple environment variables",
+        "tags": [
+          "Variables"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "variables": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "variableId": {
+                          "type": "string",
+                          "pattern": "^[cC][^\\s-]{8,}$"
+                        },
+                        "environmentId": {
+                          "anyOf": [
+                            {
+                              "enum": [
+                                "all",
+                                "production",
+                                "preview"
+                              ]
+                            },
+                            {
+                              "type": "string",
+                              "pattern": "^[cC][^\\s-]{8,}$"
+                            }
+                          ]
+                        },
+                        "name": {
+                          "type": "string",
+                          "maxLength": 191,
+                          "pattern": "[a-zA-Z_]+[a-zA-Z0-9_]*"
+                        },
+                        "value": {
+                          "type": "string",
+                          "maxLength": 8192
+                        }
+                      },
+                      "required": [
+                        "environmentId",
+                        "name",
+                        "value"
+                      ]
+                    }
+                  }
+                },
+                "required": [
+                  "variables"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "created": {
+                      "type": "number"
+                    },
+                    "updated": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "created",
+                    "updated"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "variables.delete",
+        "summary": "Delete Variables",
+        "description": "Delete multiple environment variables by ID",
+        "tags": [
+          "Variables"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "variableIds": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[cC][^\\s-]{8,}$"
+                    }
+                  }
+                },
+                "required": [
+                  "variableIds"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "deleted"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
