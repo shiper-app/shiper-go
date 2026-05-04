@@ -1,5 +1,5 @@
-package: shiper
-output: shiper.gen.go
+package: genapi
+output: internal/genapi/client.gen.go
 generate:
   models: true
   client: true
