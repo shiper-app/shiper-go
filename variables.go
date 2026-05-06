@@ -15,7 +15,7 @@ func (c *Client) ListVariables(ctx context.Context, projectID string, params *Va
 		return nil, err
 	}
 
-	resp, err := raw.VariablesListWithResponse(normalizeContext(ctx), projectID, params)
+	resp, err := raw.ProjectVariablesListWithResponse(normalizeContext(ctx), projectID, params)
 	if err != nil {
 		return nil, err
 	}
@@ -39,7 +39,7 @@ func (c *Client) UpsertVariables(ctx context.Context, projectID string, body Var
 		return nil, err
 	}
 
-	resp, err := raw.VariablesUpsertWithResponse(normalizeContext(ctx), projectID, body)
+	resp, err := raw.ProjectVariablesUpsertWithResponse(normalizeContext(ctx), projectID, body)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +63,7 @@ func (c *Client) DeleteVariables(ctx context.Context, projectID string, body Var
 		return nil, err
 	}
 
-	resp, err := raw.VariablesDeleteWithResponse(normalizeContext(ctx), projectID, body)
+	resp, err := raw.ProjectVariablesDeleteWithResponse(normalizeContext(ctx), projectID, body)
 	if err != nil {
 		return nil, err
 	}

@@ -15,17 +15,24 @@ import (
 )
 
 func main() {
-    client, err := shiper.NewClient(shiper.WithToken("YOUR_TOKEN"))
-    if err != nil {
-        log.Fatal(err)
-    }
+	client, err := shiper.NewClient(shiper.WithToken("YOUR_TOKEN"))
+	if err != nil {
+		log.Fatal(err)
+	}
 
     resp, err := client.ListProjects(context.Background(), nil)
     if err != nil {
         log.Fatal(err)
     }
 
-    log.Printf("projects: %d", len(resp.JSON200.Data))
+	log.Printf("projects: %d", len(resp.JSON200.Data))
+
+	envs, err := client.ListProjectEnvironments(context.Background(), "project-id")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("environments: %d", len(envs.JSON200.Environments))
 }
 ```
 

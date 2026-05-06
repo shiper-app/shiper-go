@@ -18,6 +18,8 @@ tags:
     description: API endpoints for project access control lists
   - name: Framework
     description: API endpoints for frameworks
+  - name: Internal
+    description: Internal API endpoints not exposed in production
 security:
   - apiKey: []
   - bearerAuth: []
@@ -39,6 +41,7 @@ paths:
       description: Get a list of users
       tags:
         - User
+        - Internal
       responses:
         '200':
           description: OK
@@ -74,7 +77,6 @@ paths:
                         stripeSubscriptionId:
                           anyOf:
                             - type: string
-                            - type: 'null'
                         role:
                           enum:
                             - user
@@ -101,6 +103,7 @@ paths:
       description: Get a user by ID
       tags:
         - User
+        - Internal
       parameters:
         - name: id
           in: path
@@ -138,7 +141,6 @@ paths:
                   stripeSubscriptionId:
                     anyOf:
                       - type: string
-                      - type: 'null'
                   role:
                     enum:
                       - user
@@ -193,7 +195,6 @@ paths:
                   stripeSubscriptionId:
                     anyOf:
                       - type: string
-                      - type: 'null'
                   role:
                     enum:
                       - user
@@ -305,7 +306,6 @@ paths:
                     connectorInstanceId:
                       anyOf:
                         - type: string
-                        - type: 'null'
                     targetType:
                       type: string
                     productionResourceLimit:
@@ -347,6 +347,11 @@ paths:
                           - key
                     productionBranch:
                       type: string
+                    githubInstallationId:
+                      anyOf:
+                        - type: number
+                    replicas:
+                      type: number
                   required:
                     - displayName
                     - framework
@@ -392,6 +397,12 @@ paths:
             type: boolean
           allowEmptyValue: true
           allowReserved: true
+        - name: targetType
+          in: query
+          schema:
+            type: string
+          allowEmptyValue: true
+          allowReserved: true
       responses:
         '200':
           description: OK
@@ -428,7 +439,6 @@ paths:
                         connectorInstanceId:
                           anyOf:
                             - type: string
-                            - type: 'null'
                         targetType:
                           type: string
                         enabled:
@@ -478,6 +488,11 @@ paths:
                               - key
                         productionBranch:
                           type: string
+                        githubInstallationId:
+                          anyOf:
+                            - type: number
+                        replicas:
+                          type: number
                         activePreviewEnvironments:
                           type: number
                         userName:
@@ -542,7 +557,6 @@ paths:
                   connectorInstanceId:
                     anyOf:
                       - type: string
-                      - type: 'null'
                   targetType:
                     type: string
                   enabled:
@@ -592,6 +606,11 @@ paths:
                         - key
                   productionBranch:
                     type: string
+                  githubInstallationId:
+                    anyOf:
+                      - type: number
+                  replicas:
+                    type: number
                   activePreviewEnvironments:
                     type: number
                 required:
@@ -925,6 +944,615 @@ paths:
       responses:
         '200':
           description: OK
+  /projects/{projectId}/variables:
+    get:
+      operationId: project.variables.list
+      summary: List Variables
+      description: Get all environment variables for a project
+      tags:
+        - Variables
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: query
+          schema:
+            anyOf:
+              - enum:
+                  - all
+                  - production
+                  - preview
+              - type: string
+                pattern: ^[cC][^\s-]{8,}$
+          style: deepObject
+          explode: true
+          allowEmptyValue: true
+          allowReserved: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  variables:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        variableId:
+                          type: string
+                          pattern: ^[cC][^\s-]{8,}$
+                        environmentId:
+                          anyOf:
+                            - enum:
+                                - all
+                                - production
+                                - preview
+                            - type: string
+                              pattern: ^[cC][^\s-]{8,}$
+                        name:
+                          type: string
+                          maxLength: 191
+                          pattern: '[a-zA-Z_]+[a-zA-Z0-9_]*'
+                        value:
+                          type: string
+                          maxLength: 8192
+                      required:
+                        - environmentId
+                        - name
+                        - value
+                required:
+                  - variables
+    post:
+      operationId: project.variables.upsert
+      summary: Upsert Variables
+      description: Create or update multiple environment variables
+      tags:
+        - Variables
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                variables:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: object
+                    properties:
+                      variableId:
+                        type: string
+                        pattern: ^[cC][^\s-]{8,}$
+                      environmentId:
+                        anyOf:
+                          - enum:
+                              - all
+                              - production
+                              - preview
+                          - type: string
+                            pattern: ^[cC][^\s-]{8,}$
+                      name:
+                        type: string
+                        maxLength: 191
+                        pattern: '[a-zA-Z_]+[a-zA-Z0-9_]*'
+                      value:
+                        type: string
+                        maxLength: 8192
+                    required:
+                      - environmentId
+                      - name
+                      - value
+              required:
+                - variables
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: number
+                  updated:
+                    type: number
+                required:
+                  - created
+                  - updated
+    delete:
+      operationId: project.variables.delete
+      summary: Delete Variables
+      description: Delete multiple environment variables by ID
+      tags:
+        - Variables
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                variableIds:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    pattern: ^[cC][^\s-]{8,}$
+              required:
+                - variableIds
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted:
+                    type: number
+                required:
+                  - deleted
+  /projects/{projectId}/environments:
+    get:
+      operationId: project.environments.list
+      summary: List Environments
+      description: Get all environments for a project
+      tags:
+        - Environment
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  environments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        projectId:
+                          type: string
+                        branch:
+                          type: string
+                        production:
+                          type: boolean
+                        enabled:
+                          type: boolean
+                      required:
+                        - id
+                        - projectId
+                        - branch
+                        - production
+                        - enabled
+                required:
+                  - environments
+  /projects/{projectId}/environments/{environmentId}:
+    patch:
+      operationId: project.environments.update
+      summary: Update Environment
+      description: Update environment properties (e.g. enable or disable)
+      tags:
+        - Environment
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+              required:
+                - enabled
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/environments/{environmentId}/deployments:
+    get:
+      operationId: project.environments.deployments.list
+      summary: List Deployments
+      description: Get all deployments for an environment
+      tags:
+        - Deployment
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: state
+          in: query
+          schema:
+            enum:
+              - pending
+              - success
+              - failure
+              - in_progress
+              - queued
+              - error
+              - inactive
+          style: deepObject
+          explode: true
+          allowEmptyValue: true
+          allowReserved: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deployments:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        environmentId:
+                          type: string
+                        primary:
+                          type: boolean
+                        state:
+                          enum:
+                            - pending
+                            - success
+                            - failure
+                            - in_progress
+                            - queued
+                            - error
+                            - inactive
+                        githubDeploymentId:
+                          type: string
+                        commitSha:
+                          type: string
+                        commitMessage:
+                          anyOf:
+                            - type: string
+                        commitUrl:
+                          anyOf:
+                            - type: string
+                        image:
+                          anyOf:
+                            - type: string
+                        defaultDomain:
+                          anyOf:
+                            - type: string
+                        correlationId:
+                          anyOf:
+                            - type: string
+                        createdAt:
+                          type: string
+                          format: date-time
+                        updatedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                        buildStartedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                        buildFinishedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                        deployStartedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                        deployFinishedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                      required:
+                        - id
+                        - environmentId
+                        - primary
+                        - state
+                        - githubDeploymentId
+                        - commitSha
+                        - commitMessage
+                        - commitUrl
+                        - image
+                        - defaultDomain
+                        - correlationId
+                        - createdAt
+                        - updatedAt
+                        - buildStartedAt
+                        - buildFinishedAt
+                        - deployStartedAt
+                        - deployFinishedAt
+                required:
+                  - deployments
+  /projects/{projectId}/environments/{environmentId}/deployments/{deploymentId}/redeploy:
+    post:
+      operationId: project.environments.deployments.redeploy
+      summary: Redeploy
+      description: Trigger a redeployment of an existing deployment
+      tags:
+        - Deployment
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rebuild:
+                  type: boolean
+                  default: true
+                correlationId:
+                  type: string
+                  minLength: 16
+                  maxLength: 16
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/environments/{environmentId}/deployments/{deploymentId}/cancel:
+    post:
+      operationId: project.environments.deployments.cancel
+      summary: Cancel Deployment
+      description: Cancel an in-progress deployment
+      tags:
+        - Deployment
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/environments/{environmentId}/domains:
+    get:
+      operationId: project.environments.domains.list
+      summary: List Domains
+      description: Get all domains (default and custom) for an environment
+      tags:
+        - Domain
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  domains:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        default:
+                          type: boolean
+                        environmentId:
+                          type: string
+                      required:
+                        - name
+                        - default
+                        - environmentId
+                required:
+                  - domains
+    post:
+      operationId: project.environments.domains.add
+      summary: Add Custom Domain
+      description: Add a custom domain to an environment
+      tags:
+        - Domain
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                domain:
+                  type: string
+                  pattern: >-
+                    ^(?!:\/\/)(?=.{1,255}$)((.{1,63}\.){1,127}(?![0-9]*$)[a-z0-9-]+\.?)$
+              required:
+                - domain
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/environments/{environmentId}/domains/{domainName}:
+    delete:
+      operationId: project.environments.domains.delete
+      summary: Delete Custom Domain
+      description: >-
+        Remove a custom domain from an environment. Default domains cannot be
+        deleted.
+      tags:
+        - Domain
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: domainName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/environments/{environmentId}/domains/{domainName}/validate-dns:
+    get:
+      operationId: project.environments.domains.validateDns
+      summary: Validate DNS
+      description: Check if the DNS records for a custom domain point to the platform
+      tags:
+        - Domain
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: domainName
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                  records:
+                    type: array
+                    items:
+                      type: string
+                  validIps:
+                    type: array
+                    items:
+                      type: string
+                  domain:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - valid
+                  - records
+                  - validIps
+                  - domain
+                  - message
   /frameworks/{frameworkId}:
     get:
       operationId: framework.get
@@ -1132,165 +1760,3 @@ paths:
                         - resourceTemplates
                 required:
                   - data
-  /{projectId}/variables:
-    get:
-      operationId: variables.list
-      summary: List Variables
-      description: Get all environment variables for a project
-      tags:
-        - Variables
-      parameters:
-        - name: projectId
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: environmentId
-          in: query
-          schema:
-            type: string
-            pattern: ^(all|production|preview|[cC][^\s-]{8,})$
-          allowEmptyValue: true
-          allowReserved: true
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  variables:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        variableId:
-                          type: string
-                          pattern: ^[cC][^\s-]{8,}$
-                        environmentId:
-                          anyOf:
-                            - enum:
-                                - all
-                                - production
-                                - preview
-                            - type: string
-                              pattern: ^[cC][^\s-]{8,}$
-                        name:
-                          type: string
-                          maxLength: 191
-                          pattern: '[a-zA-Z_]+[a-zA-Z0-9_]*'
-                        value:
-                          type: string
-                          maxLength: 8192
-                      required:
-                        - environmentId
-                        - name
-                        - value
-                required:
-                  - variables
-    post:
-      operationId: variables.upsert
-      summary: Upsert Variables
-      description: Create or update multiple environment variables
-      tags:
-        - Variables
-      parameters:
-        - name: projectId
-          in: path
-          required: true
-          schema:
-            type: string
-            pattern: ^[cC][^\s-]{8,}$
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                variables:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: object
-                    properties:
-                      variableId:
-                        type: string
-                        pattern: ^[cC][^\s-]{8,}$
-                      environmentId:
-                        anyOf:
-                          - enum:
-                              - all
-                              - production
-                              - preview
-                          - type: string
-                            pattern: ^[cC][^\s-]{8,}$
-                      name:
-                        type: string
-                        maxLength: 191
-                        pattern: '[a-zA-Z_]+[a-zA-Z0-9_]*'
-                      value:
-                        type: string
-                        maxLength: 8192
-                    required:
-                      - environmentId
-                      - name
-                      - value
-              required:
-                - variables
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  created:
-                    type: number
-                  updated:
-                    type: number
-                required:
-                  - created
-                  - updated
-    delete:
-      operationId: variables.delete
-      summary: Delete Variables
-      description: Delete multiple environment variables by ID
-      tags:
-        - Variables
-      parameters:
-        - name: projectId
-          in: path
-          required: true
-          schema:
-            type: string
-            pattern: ^[cC][^\s-]{8,}$
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                variableIds:
-                  type: array
-                  minItems: 1
-                  items:
-                    type: string
-                    pattern: ^[cC][^\s-]{8,}$
-              required:
-                - variableIds
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  deleted:
-                    type: number
-                required:
-                  - deleted
