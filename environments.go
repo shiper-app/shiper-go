@@ -107,7 +107,34 @@ func (c *Client) CancelDeployment(ctx context.Context, projectID string, environ
 	return resp, nil
 }
 
-func (c *Client) PatchDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string, body ProjectEnvironmentDeploymentRedeployRequest) (*ProjectEnvironmentsDeploymentsRedeployResponse, error) {
+func (c *Client) PatchDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string, body ProjectEnvironmentDeploymentsPatchRequest) (*ProjectEnvironmentDeploymentsPatchResponse, error) {
+	if err := validateRequiredString("projectID", projectID); err != nil {
+		return nil, err
+	}
+	if err := validateRequiredString("environmentID", environmentID); err != nil {
+		return nil, err
+	}
+	if err := validateRequiredString("deploymentID", deploymentID); err != nil {
+		return nil, err
+	}
+
+	raw, err := c.getRawClient()
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := raw.ProjectEnvironmentsDeploymentsPatchWithResponse(normalizeContext(ctx), projectID, environmentID, deploymentID, body)
+	if err != nil {
+		return nil, err
+	}
+	if err := require2xx("PatchDeployment", resp.StatusCode(), resp.Body); err != nil {
+		return nil, err
+	}
+
+	return resp, nil
+}
+
+func (c *Client) RedeployDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string, body ProjectEnvironmentDeploymentRedeployRequest) (*ProjectEnvironmentsDeploymentsRedeployResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -127,7 +154,7 @@ func (c *Client) PatchDeployment(ctx context.Context, projectID string, environm
 	if err != nil {
 		return nil, err
 	}
-	if err := require2xx("PatchDeployment", resp.StatusCode(), resp.Body); err != nil {
+	if err := require2xx("RedeployDeployment", resp.StatusCode(), resp.Body); err != nil {
 		return nil, err
 	}
 
