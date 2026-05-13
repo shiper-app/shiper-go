@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (c *Client) ListProjectEnvironments(ctx context.Context, projectID string) (*ProjectEnvironmentsListResponse, error) {
+func (c *Client) ListEnvironments(ctx context.Context, projectID string) (*ProjectEnvironmentsListResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -19,17 +19,17 @@ func (c *Client) ListProjectEnvironments(ctx context.Context, projectID string) 
 	if err != nil {
 		return nil, err
 	}
-	if err := requireStatus("ListProjectEnvironments", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
+	if err := requireStatus("ListEnvironments", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
 		return nil, err
 	}
 	if resp.JSON200 == nil {
-		return nil, newAPIError("ListProjectEnvironments", resp.StatusCode(), resp.Body)
+		return nil, newAPIError("ListEnvironments", resp.StatusCode(), resp.Body)
 	}
 
 	return resp, nil
 }
 
-func (c *Client) UpdateProjectEnvironment(ctx context.Context, projectID string, environmentID string, body ProjectEnvironmentUpdateRequest) (*ProjectEnvironmentsUpdateResponse, error) {
+func (c *Client) PatchEnvironment(ctx context.Context, projectID string, environmentID string, body ProjectEnvironmentUpdateRequest) (*ProjectEnvironmentsUpdateResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -46,14 +46,14 @@ func (c *Client) UpdateProjectEnvironment(ctx context.Context, projectID string,
 	if err != nil {
 		return nil, err
 	}
-	if err := require2xx("UpdateProjectEnvironment", resp.StatusCode(), resp.Body); err != nil {
+	if err := require2xx("PatchEnvironment", resp.StatusCode(), resp.Body); err != nil {
 		return nil, err
 	}
 
 	return resp, nil
 }
 
-func (c *Client) ListProjectEnvironmentDeployments(ctx context.Context, projectID string, environmentID string, params *ProjectEnvironmentDeploymentsListParams) (*ProjectEnvironmentsDeploymentsListResponse, error) {
+func (c *Client) ListDeployments(ctx context.Context, projectID string, environmentID string, params *ProjectEnvironmentDeploymentsListParams) (*ProjectEnvironmentsDeploymentsListResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -70,17 +70,17 @@ func (c *Client) ListProjectEnvironmentDeployments(ctx context.Context, projectI
 	if err != nil {
 		return nil, err
 	}
-	if err := requireStatus("ListProjectEnvironmentDeployments", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
+	if err := requireStatus("ListDeployments", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
 		return nil, err
 	}
 	if resp.JSON200 == nil {
-		return nil, newAPIError("ListProjectEnvironmentDeployments", resp.StatusCode(), resp.Body)
+		return nil, newAPIError("ListDeployments", resp.StatusCode(), resp.Body)
 	}
 
 	return resp, nil
 }
 
-func (c *Client) CancelProjectEnvironmentDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string) (*ProjectEnvironmentsDeploymentsCancelResponse, error) {
+func (c *Client) CancelDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string) (*ProjectEnvironmentsDeploymentsCancelResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -100,14 +100,14 @@ func (c *Client) CancelProjectEnvironmentDeployment(ctx context.Context, project
 	if err != nil {
 		return nil, err
 	}
-	if err := require2xx("CancelProjectEnvironmentDeployment", resp.StatusCode(), resp.Body); err != nil {
+	if err := require2xx("CancelDeployment", resp.StatusCode(), resp.Body); err != nil {
 		return nil, err
 	}
 
 	return resp, nil
 }
 
-func (c *Client) RedeployProjectEnvironmentDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string, body ProjectEnvironmentDeploymentRedeployRequest) (*ProjectEnvironmentsDeploymentsRedeployResponse, error) {
+func (c *Client) PatchDeployment(ctx context.Context, projectID string, environmentID string, deploymentID string, body ProjectEnvironmentDeploymentRedeployRequest) (*ProjectEnvironmentsDeploymentsRedeployResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -127,14 +127,14 @@ func (c *Client) RedeployProjectEnvironmentDeployment(ctx context.Context, proje
 	if err != nil {
 		return nil, err
 	}
-	if err := require2xx("RedeployProjectEnvironmentDeployment", resp.StatusCode(), resp.Body); err != nil {
+	if err := require2xx("PatchDeployment", resp.StatusCode(), resp.Body); err != nil {
 		return nil, err
 	}
 
 	return resp, nil
 }
 
-func (c *Client) ListProjectEnvironmentDomains(ctx context.Context, projectID string, environmentID string) (*ProjectEnvironmentsDomainsListResponse, error) {
+func (c *Client) ListDomains(ctx context.Context, projectID string, environmentID string) (*ProjectEnvironmentsDomainsListResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -151,17 +151,17 @@ func (c *Client) ListProjectEnvironmentDomains(ctx context.Context, projectID st
 	if err != nil {
 		return nil, err
 	}
-	if err := requireStatus("ListProjectEnvironmentDomains", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
+	if err := requireStatus("ListDomains", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
 		return nil, err
 	}
 	if resp.JSON200 == nil {
-		return nil, newAPIError("ListProjectEnvironmentDomains", resp.StatusCode(), resp.Body)
+		return nil, newAPIError("ListDomains", resp.StatusCode(), resp.Body)
 	}
 
 	return resp, nil
 }
 
-func (c *Client) AddProjectEnvironmentDomain(ctx context.Context, projectID string, environmentID string, body ProjectEnvironmentDomainAddRequest) (*ProjectEnvironmentsDomainsAddResponse, error) {
+func (c *Client) AddDomain(ctx context.Context, projectID string, environmentID string, body ProjectEnvironmentDomainAddRequest) (*ProjectEnvironmentsDomainsAddResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -178,14 +178,14 @@ func (c *Client) AddProjectEnvironmentDomain(ctx context.Context, projectID stri
 	if err != nil {
 		return nil, err
 	}
-	if err := require2xx("AddProjectEnvironmentDomain", resp.StatusCode(), resp.Body); err != nil {
+	if err := require2xx("AddDomain", resp.StatusCode(), resp.Body); err != nil {
 		return nil, err
 	}
 
 	return resp, nil
 }
 
-func (c *Client) DeleteProjectEnvironmentDomain(ctx context.Context, projectID string, environmentID string, domainName string) (*ProjectEnvironmentsDomainsDeleteResponse, error) {
+func (c *Client) DeleteDomain(ctx context.Context, projectID string, environmentID string, domainName string) (*ProjectEnvironmentsDomainsDeleteResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -205,14 +205,14 @@ func (c *Client) DeleteProjectEnvironmentDomain(ctx context.Context, projectID s
 	if err != nil {
 		return nil, err
 	}
-	if err := require2xx("DeleteProjectEnvironmentDomain", resp.StatusCode(), resp.Body); err != nil {
+	if err := require2xx("DeleteDomain", resp.StatusCode(), resp.Body); err != nil {
 		return nil, err
 	}
 
 	return resp, nil
 }
 
-func (c *Client) ValidateProjectEnvironmentDomainDNS(ctx context.Context, projectID string, environmentID string, domainName string) (*ProjectEnvironmentsDomainsValidateDNSResponse, error) {
+func (c *Client) ValidateDomainDNS(ctx context.Context, projectID string, environmentID string, domainName string) (*ProjectEnvironmentsDomainsValidateDNSResponse, error) {
 	if err := validateRequiredString("projectID", projectID); err != nil {
 		return nil, err
 	}
@@ -232,11 +232,11 @@ func (c *Client) ValidateProjectEnvironmentDomainDNS(ctx context.Context, projec
 	if err != nil {
 		return nil, err
 	}
-	if err := requireStatus("ValidateProjectEnvironmentDomainDNS", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
+	if err := requireStatus("ValidateDomainDNS", resp.StatusCode(), resp.Body, http.StatusOK); err != nil {
 		return nil, err
 	}
 	if resp.JSON200 == nil {
-		return nil, newAPIError("ValidateProjectEnvironmentDomainDNS", resp.StatusCode(), resp.Body)
+		return nil, newAPIError("ValidateDomainDNS", resp.StatusCode(), resp.Body)
 	}
 
 	return resp, nil

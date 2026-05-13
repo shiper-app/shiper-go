@@ -27,7 +27,7 @@ func main() {
 
 	log.Printf("projects: %d", len(resp.JSON200.Data))
 
-	envs, err := client.ListProjectEnvironments(context.Background(), "project-id")
+	envs, err := client.ListEnvironments(context.Background(), "project-id")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func main() {
 ## Maintainers: Add Endpoint
 
 1. Regenerate `internal/genapi/client.gen.go` (`go generate ./...`).
-2. Add a thin `*Client` method in the matching resource file (`projects.go`, `users.go`, `variables.go`).
+2. Add a thin `*Client` method in the matching resource file (`projects.go`, `users.go`, `variables.go`, `environments.go`).
 3. Follow wrapper rules: validate required IDs, call `raw.<Endpoint>WithResponse`, enforce status with `requireStatus`/`require2xx`, return `newAPIError` on unexpected status.
 4. Add aliases in `types.go` if new request/response types are needed.
 5. Add/extend a focused test for success and non-2xx behavior.

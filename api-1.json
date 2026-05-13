@@ -569,6 +569,9 @@
                         "items": {
                           "type": "string"
                         }
+                      },
+                      "unstable_targetType": {
+                        "type": "string"
                       }
                     }
                   }
@@ -1258,14 +1261,28 @@
                             ]
                           },
                           "createdAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "x-native-type": "date"
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "x-native-type": "date"
+                              }
+                            ]
                           },
                           "updatedAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "x-native-type": "date"
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "string",
+                                "format": "date-time",
+                                "x-native-type": "date"
+                              }
+                            ]
                           }
                         },
                         "required": [
@@ -1352,14 +1369,28 @@
                       ]
                     },
                     "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "x-native-type": "date"
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time",
+                          "x-native-type": "date"
+                        }
+                      ]
                     },
                     "updatedAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "x-native-type": "date"
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "string",
+                          "format": "date-time",
+                          "x-native-type": "date"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -2046,6 +2077,28 @@
                                 "type": "null"
                               }
                             ]
+                          },
+                          "disabledAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
+                          "cancelledAt": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           }
                         },
                         "required": [
@@ -2065,7 +2118,9 @@
                           "buildStartedAt",
                           "buildFinishedAt",
                           "deployStartedAt",
-                          "deployFinishedAt"
+                          "deployFinishedAt",
+                          "disabledAt",
+                          "cancelledAt"
                         ]
                       }
                     }
@@ -2182,6 +2237,138 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/projects/{projectId}/environments/{environmentId}/deployments/{deploymentId}": {
+      "patch": {
+        "operationId": "project.environments.deployments.patch",
+        "summary": "Patch Deployment",
+        "description": "Patch deployment details such as disabledAt",
+        "tags": [
+          "Deployment"
+        ],
+        "parameters": [
+          {
+            "name": "projectId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          },
+          {
+            "name": "environmentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          },
+          {
+            "name": "deploymentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[cC][^\\s-]{8,}$"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "disabledAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "cancelledAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "buildFinishedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "deployFinishedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "buildStartedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "deployStartedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "image": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"

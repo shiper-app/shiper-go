@@ -77,6 +77,7 @@ paths:
                         stripeSubscriptionId:
                           anyOf:
                             - type: string
+                            
                         role:
                           enum:
                             - user
@@ -141,6 +142,7 @@ paths:
                   stripeSubscriptionId:
                     anyOf:
                       - type: string
+                      
                   role:
                     enum:
                       - user
@@ -195,6 +197,7 @@ paths:
                   stripeSubscriptionId:
                     anyOf:
                       - type: string
+                      
                   role:
                     enum:
                       - user
@@ -306,6 +309,7 @@ paths:
                     connectorInstanceId:
                       anyOf:
                         - type: string
+                        
                     targetType:
                       type: string
                     productionResourceLimit:
@@ -350,6 +354,7 @@ paths:
                     githubInstallationId:
                       anyOf:
                         - type: number
+                        
                     replicas:
                       type: number
                   required:
@@ -364,6 +369,8 @@ paths:
                       type: array
                       items:
                         type: string
+                    unstable_targetType:
+                      type: string
       responses:
         '201':
           description: OK
@@ -439,6 +446,7 @@ paths:
                         connectorInstanceId:
                           anyOf:
                             - type: string
+                            
                         targetType:
                           type: string
                         enabled:
@@ -491,6 +499,7 @@ paths:
                         githubInstallationId:
                           anyOf:
                             - type: number
+                            
                         replicas:
                           type: number
                         activePreviewEnvironments:
@@ -557,6 +566,7 @@ paths:
                   connectorInstanceId:
                     anyOf:
                       - type: string
+                      
                   targetType:
                     type: string
                   enabled:
@@ -609,6 +619,7 @@ paths:
                   githubInstallationId:
                     anyOf:
                       - type: number
+                      
                   replicas:
                     type: number
                   activePreviewEnvironments:
@@ -806,13 +817,17 @@ paths:
                             - WRITE
                             - READ
                         createdAt:
-                          type: string
-                          format: date-time
-                          x-native-type: date
+                          anyOf:
+                            - type: string
+                            - type: string
+                              format: date-time
+                              x-native-type: date
                         updatedAt:
-                          type: string
-                          format: date-time
-                          x-native-type: date
+                          anyOf:
+                            - type: string
+                            - type: string
+                              format: date-time
+                              x-native-type: date
                       required:
                         - projectId
                         - userId
@@ -870,13 +885,17 @@ paths:
                       - WRITE
                       - READ
                   createdAt:
-                    type: string
-                    format: date-time
-                    x-native-type: date
+                    anyOf:
+                      - type: string
+                      - type: string
+                        format: date-time
+                        x-native-type: date
                   updatedAt:
-                    type: string
-                    format: date-time
-                    x-native-type: date
+                    anyOf:
+                      - type: string
+                      - type: string
+                        format: date-time
+                        x-native-type: date
                 required:
                   - projectId
                   - userId
@@ -1263,18 +1282,23 @@ paths:
                         commitMessage:
                           anyOf:
                             - type: string
+                            
                         commitUrl:
                           anyOf:
                             - type: string
+                            
                         image:
                           anyOf:
                             - type: string
+                            
                         defaultDomain:
                           anyOf:
                             - type: string
+                            
                         correlationId:
                           anyOf:
                             - type: string
+                            
                         createdAt:
                           type: string
                           format: date-time
@@ -1282,22 +1306,37 @@ paths:
                           anyOf:
                             - type: string
                               format: date-time
+                            
                         buildStartedAt:
                           anyOf:
                             - type: string
                               format: date-time
+                            
                         buildFinishedAt:
                           anyOf:
                             - type: string
                               format: date-time
+                            
                         deployStartedAt:
                           anyOf:
                             - type: string
                               format: date-time
+                            
                         deployFinishedAt:
                           anyOf:
                             - type: string
                               format: date-time
+                            
+                        disabledAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            
+                        cancelledAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            
                       required:
                         - id
                         - environmentId
@@ -1316,6 +1355,8 @@ paths:
                         - buildFinishedAt
                         - deployStartedAt
                         - deployFinishedAt
+                        - disabledAt
+                        - cancelledAt
                 required:
                   - deployments
   /projects/{projectId}/environments/{environmentId}/deployments/{deploymentId}/redeploy:
@@ -1387,6 +1428,70 @@ paths:
           schema:
             type: string
             pattern: ^[cC][^\s-]{8,}$
+      responses:
+        '200':
+          description: OK
+  /projects/{projectId}/environments/{environmentId}/deployments/{deploymentId}:
+    patch:
+      operationId: project.environments.deployments.patch
+      summary: Patch Deployment
+      description: Patch deployment details such as disabledAt
+      tags:
+        - Deployment
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: environmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+        - name: deploymentId
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[cC][^\s-]{8,}$
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                disabledAt:
+                  anyOf:
+                    - type: string
+                      format: date-time
+                cancelledAt:
+                  anyOf:
+                    - type: string
+                      format: date-time
+                buildFinishedAt:
+                  anyOf:
+                    - type: string
+                      format: date-time
+                deployFinishedAt:
+                  anyOf:
+                    - type: string
+                      format: date-time
+                buildStartedAt:
+                  anyOf:
+                    - type: string
+                      format: date-time
+                deployStartedAt:
+                  anyOf:
+                    - type: string
+                      format: date-time
+                image:
+                  anyOf:
+                    - type: string
+                    
       responses:
         '200':
           description: OK
