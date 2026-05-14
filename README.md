@@ -46,9 +46,9 @@ func main() {
 
 ## Release a new version
 
-1. Download api-1.json from https://api.shiper.app/v2
-2. run `openapi-down-convert --input "api-1.json" --output spec-3.0.yaml`
-3. manually edit spec-3.0.yaml to remove the "Null" from all oneOf schemas.
-4. run `go generate ./...`
-5. commit the generated code and handwritten wrapper changes and push to main
+1. Download `api-1.json` from https://api.shiper.app/v2.
+2. Down-convert to OpenAPI 3.0: `npx @apiture/openapi-down-convert --input api-1.json --output spec-3.0.yaml`.
+3. Patch the spec for oapi-codegen compatibility (collapses `anyOf: [X, null]` into `nullable: true` and sets `type: string` on bare string enums): `node hack/fix-nullables.mjs spec-3.0.yaml`. Run `cd hack && npm install` once to fetch the YAML dep.
+4. Regenerate the client: `go generate ./...`.
+5. Commit the generated code and any handwritten wrapper changes and push to main.
 6. Create a new release with the tag name `vX.Y.Z` where X.Y.Z is the new version number.

@@ -1,0 +1,9 @@
+{
+  "name": "shiper-go-hack",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "yaml": "^2.6.0"
+  }
+}
