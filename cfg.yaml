@@ -3,3 +3,9 @@ output: internal/genapi/client.gen.go
 generate:
   models: true
   client: true
+output-options:
+  # Keep all components/schemas entries even if no route references them
+  # directly. The contract publishes a stable set of domain types
+  # (Project, Deployment, ...); pruning would drop unused ones and force
+  # consumers to import a derived variant instead.
+  skip-prune: true

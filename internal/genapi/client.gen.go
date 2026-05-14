@@ -17,36 +17,494 @@ import (
 	"github.com/oapi-codegen/runtime"
 )
 
+// Defines values for AclRole.
 const (
-	ApiKeyScopes     apiKeyContextKey     = "apiKey.Scopes"
-	BearerAuthScopes bearerAuthContextKey = "bearerAuth.Scopes"
+	ADMIN AclRole = "ADMIN"
+	READ  AclRole = "READ"
+	WRITE AclRole = "WRITE"
 )
 
-// apiKeyContextKey is the context key for apiKey security scheme
-type apiKeyContextKey string
+// Valid indicates whether the value is a known member of the AclRole enum.
+func (e AclRole) Valid() bool {
+	switch e {
+	case ADMIN:
+		return true
+	case READ:
+		return true
+	case WRITE:
+		return true
+	default:
+		return false
+	}
+}
 
-// bearerAuthContextKey is the context key for bearerAuth security scheme
-type bearerAuthContextKey string
+// Defines values for BuildOptionType.
+const (
+	Checkbox BuildOptionType = "checkbox"
+	Dropdown BuildOptionType = "dropdown"
+	File     BuildOptionType = "file"
+	Folder   BuildOptionType = "folder"
+	Input    BuildOptionType = "input"
+)
 
-// FrameworkList200JSONResponseBodyDataBuildOptionsDefault0 defines parameters for FrameworkList.
-type FrameworkList200JSONResponseBodyDataBuildOptionsDefault0 = string
+// Valid indicates whether the value is a known member of the BuildOptionType enum.
+func (e BuildOptionType) Valid() bool {
+	switch e {
+	case Checkbox:
+		return true
+	case Dropdown:
+		return true
+	case File:
+		return true
+	case Folder:
+		return true
+	case Input:
+		return true
+	default:
+		return false
+	}
+}
 
-// FrameworkList200JSONResponseBodyDataBuildOptionsDefault1 defines parameters for FrameworkList.
-type FrameworkList200JSONResponseBodyDataBuildOptionsDefault1 = bool
+// Defines values for DeploymentState.
+const (
+	DeploymentStateError      DeploymentState = "error"
+	DeploymentStateFailure    DeploymentState = "failure"
+	DeploymentStateInProgress DeploymentState = "in_progress"
+	DeploymentStateInactive   DeploymentState = "inactive"
+	DeploymentStatePending    DeploymentState = "pending"
+	DeploymentStateQueued     DeploymentState = "queued"
+	DeploymentStateSuccess    DeploymentState = "success"
+)
 
-// FrameworkList200JSONResponseBody_Data_BuildOptions_Default defines parameters for FrameworkList.
-type FrameworkList200JSONResponseBody_Data_BuildOptions_Default struct {
+// Valid indicates whether the value is a known member of the DeploymentState enum.
+func (e DeploymentState) Valid() bool {
+	switch e {
+	case DeploymentStateError:
+		return true
+	case DeploymentStateFailure:
+		return true
+	case DeploymentStateInProgress:
+		return true
+	case DeploymentStateInactive:
+		return true
+	case DeploymentStatePending:
+		return true
+	case DeploymentStateQueued:
+		return true
+	case DeploymentStateSuccess:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for InitializationNoticeType.
+const (
+	InitializationNoticeTypeError   InitializationNoticeType = "error"
+	InitializationNoticeTypeInfo    InitializationNoticeType = "info"
+	InitializationNoticeTypeWarning InitializationNoticeType = "warning"
+)
+
+// Valid indicates whether the value is a known member of the InitializationNoticeType enum.
+func (e InitializationNoticeType) Valid() bool {
+	switch e {
+	case InitializationNoticeTypeError:
+		return true
+	case InitializationNoticeTypeInfo:
+		return true
+	case InitializationNoticeTypeWarning:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for QosPolicyQosPolicyId.
+const (
+	BestEffort   QosPolicyQosPolicyId = "best-effort"
+	HighPriority QosPolicyQosPolicyId = "high-priority"
+)
+
+// Valid indicates whether the value is a known member of the QosPolicyQosPolicyId enum.
+func (e QosPolicyQosPolicyId) Valid() bool {
+	switch e {
+	case BestEffort:
+		return true
+	case HighPriority:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UserRole.
+const (
+	UserRoleAdmin UserRole = "admin"
+	UserRoleUser  UserRole = "user"
+)
+
+// Valid indicates whether the value is a known member of the UserRole enum.
+func (e UserRole) Valid() bool {
+	switch e {
+	case UserRoleAdmin:
+		return true
+	case UserRoleUser:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VariableEnvironmentId0.
+const (
+	VariableEnvironmentId0All        VariableEnvironmentId0 = "all"
+	VariableEnvironmentId0Preview    VariableEnvironmentId0 = "preview"
+	VariableEnvironmentId0Production VariableEnvironmentId0 = "production"
+)
+
+// Valid indicates whether the value is a known member of the VariableEnvironmentId0 enum.
+func (e VariableEnvironmentId0) Valid() bool {
+	switch e {
+	case VariableEnvironmentId0All:
+		return true
+	case VariableEnvironmentId0Preview:
+		return true
+	case VariableEnvironmentId0Production:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ProjectVariablesListParamsEnvironmentId0.
+const (
+	ProjectVariablesListParamsEnvironmentId0All        ProjectVariablesListParamsEnvironmentId0 = "all"
+	ProjectVariablesListParamsEnvironmentId0Preview    ProjectVariablesListParamsEnvironmentId0 = "preview"
+	ProjectVariablesListParamsEnvironmentId0Production ProjectVariablesListParamsEnvironmentId0 = "production"
+)
+
+// Valid indicates whether the value is a known member of the ProjectVariablesListParamsEnvironmentId0 enum.
+func (e ProjectVariablesListParamsEnvironmentId0) Valid() bool {
+	switch e {
+	case ProjectVariablesListParamsEnvironmentId0All:
+		return true
+	case ProjectVariablesListParamsEnvironmentId0Preview:
+		return true
+	case ProjectVariablesListParamsEnvironmentId0Production:
+		return true
+	default:
+		return false
+	}
+}
+
+// AclRole defines model for AclRole.
+type AclRole string
+
+// BuildOption defines model for BuildOption.
+type BuildOption struct {
+	BuildOptionId string               `json:"buildOptionId"`
+	Default       *BuildOption_Default `json:"default,omitempty"`
+	Description   string               `json:"description"`
+	Enum          *[]string            `json:"enum,omitempty"`
+	Name          string               `json:"name"`
+	Required      bool                 `json:"required"`
+	Type          BuildOptionType      `json:"type"`
+}
+
+// BuildOptionDefault0 defines model for .
+type BuildOptionDefault0 = string
+
+// BuildOptionDefault1 defines model for .
+type BuildOptionDefault1 = bool
+
+// BuildOption_Default defines model for BuildOption.Default.
+type BuildOption_Default struct {
 	union json.RawMessage
 }
 
-// FrameworkGet200JSONResponseBodyBuildOptionsDefault0 defines parameters for FrameworkGet.
-type FrameworkGet200JSONResponseBodyBuildOptionsDefault0 = string
+// BuildOptionType defines model for BuildOption.Type.
+type BuildOptionType string
 
-// FrameworkGet200JSONResponseBodyBuildOptionsDefault1 defines parameters for FrameworkGet.
-type FrameworkGet200JSONResponseBodyBuildOptionsDefault1 = bool
+// BuildParameter defines model for BuildParameter.
+type BuildParameter struct {
+	Key   string                `json:"key"`
+	Value *BuildParameter_Value `json:"value,omitempty"`
+}
 
-// FrameworkGet200JSONResponseBody_BuildOptions_Default defines parameters for FrameworkGet.
-type FrameworkGet200JSONResponseBody_BuildOptions_Default struct {
+// BuildParameterValue0 defines model for .
+type BuildParameterValue0 = string
+
+// BuildParameterValue1 defines model for .
+type BuildParameterValue1 = bool
+
+// BuildParameter_Value defines model for BuildParameter.Value.
+type BuildParameter_Value struct {
+	union json.RawMessage
+}
+
+// Deployment defines model for Deployment.
+type Deployment struct {
+	BuildFinishedAt    *time.Time      `json:"buildFinishedAt"`
+	BuildStartedAt     *time.Time      `json:"buildStartedAt"`
+	CancelledAt        *time.Time      `json:"cancelledAt"`
+	CommitMessage      *string         `json:"commitMessage"`
+	CommitSha          string          `json:"commitSha"`
+	CommitUrl          *string         `json:"commitUrl"`
+	CorrelationId      *string         `json:"correlationId"`
+	CreatedAt          time.Time       `json:"createdAt"`
+	DefaultDomain      *string         `json:"defaultDomain"`
+	DeployFinishedAt   *time.Time      `json:"deployFinishedAt"`
+	DeployStartedAt    *time.Time      `json:"deployStartedAt"`
+	DisabledAt         *time.Time      `json:"disabledAt"`
+	EnvironmentId      string          `json:"environmentId"`
+	GithubDeploymentId string          `json:"githubDeploymentId"`
+	Id                 string          `json:"id"`
+	Image              *string         `json:"image"`
+	Primary            bool            `json:"primary"`
+	State              DeploymentState `json:"state"`
+	UpdatedAt          *time.Time      `json:"updatedAt"`
+}
+
+// DeploymentState defines model for DeploymentState.
+type DeploymentState string
+
+// Domain defines model for Domain.
+type Domain struct {
+	Default       bool   `json:"default"`
+	EnvironmentId string `json:"environmentId"`
+	Name          string `json:"name"`
+}
+
+// Environment defines model for Environment.
+type Environment struct {
+	Branch     string `json:"branch"`
+	Enabled    bool   `json:"enabled"`
+	Id         string `json:"id"`
+	Production bool   `json:"production"`
+	ProjectId  string `json:"projectId"`
+}
+
+// Framework defines model for Framework.
+type Framework struct {
+	BuildOptions         []BuildOption         `json:"buildOptions"`
+	DisplayName          string                `json:"displayName"`
+	FrameworkId          string                `json:"frameworkId"`
+	Icon                 string                `json:"icon"`
+	InitializationNotice *InitializationNotice `json:"initializationNotice,omitempty"`
+	ResourceTemplates    []ResourceTemplate    `json:"resourceTemplates"`
+}
+
+// InitializationNotice defines model for InitializationNotice.
+type InitializationNotice struct {
+	Message *string                  `json:"message,omitempty"`
+	Title   string                   `json:"title"`
+	Type    InitializationNoticeType `json:"type"`
+}
+
+// InitializationNoticeType defines model for InitializationNotice.Type.
+type InitializationNoticeType string
+
+// Project defines model for Project.
+type Project struct {
+	BasePath                *string           `json:"basePath,omitempty"`
+	BuildParameters         *[]BuildParameter `json:"buildParameters,omitempty"`
+	ConnectorInstanceId     *string           `json:"connectorInstanceId,omitempty"`
+	CreatedAt               Project_CreatedAt `json:"createdAt"`
+	DisplayName             string            `json:"displayName"`
+	Enabled                 bool              `json:"enabled"`
+	Framework               string            `json:"framework"`
+	GithubInstallationId    *int              `json:"githubInstallationId,omitempty"`
+	Port                    *int              `json:"port,omitempty"`
+	PreviewResourceLimit    ResourceLimit     `json:"previewResourceLimit"`
+	ProductionBranch        *string           `json:"productionBranch,omitempty"`
+	ProductionResourceLimit ResourceLimit     `json:"productionResourceLimit"`
+	ProjectId               string            `json:"projectId"`
+	Replicas                *int              `json:"replicas,omitempty"`
+	Repository              string            `json:"repository"`
+	Slug                    string            `json:"slug"`
+	TargetType              *string           `json:"targetType,omitempty"`
+	UserId                  string            `json:"userId"`
+}
+
+// ProjectCreatedAt0 defines model for .
+type ProjectCreatedAt0 = string
+
+// ProjectCreatedAt1 defines model for .
+type ProjectCreatedAt1 = time.Time
+
+// Project_CreatedAt defines model for Project.CreatedAt.
+type Project_CreatedAt struct {
+	union json.RawMessage
+}
+
+// ProjectAcl defines model for ProjectAcl.
+type ProjectAcl struct {
+	CreatedAt ProjectAcl_CreatedAt `json:"createdAt"`
+	ProjectId string               `json:"projectId"`
+	Role      AclRole              `json:"role"`
+	UpdatedAt ProjectAcl_UpdatedAt `json:"updatedAt"`
+	UserEmail string               `json:"userEmail"`
+	UserId    string               `json:"userId"`
+	UserImage string               `json:"userImage"`
+	UserName  string               `json:"userName"`
+}
+
+// ProjectAclCreatedAt0 defines model for .
+type ProjectAclCreatedAt0 = string
+
+// ProjectAclCreatedAt1 defines model for .
+type ProjectAclCreatedAt1 = time.Time
+
+// ProjectAcl_CreatedAt defines model for ProjectAcl.CreatedAt.
+type ProjectAcl_CreatedAt struct {
+	union json.RawMessage
+}
+
+// ProjectAclUpdatedAt0 defines model for .
+type ProjectAclUpdatedAt0 = string
+
+// ProjectAclUpdatedAt1 defines model for .
+type ProjectAclUpdatedAt1 = time.Time
+
+// ProjectAcl_UpdatedAt defines model for ProjectAcl.UpdatedAt.
+type ProjectAcl_UpdatedAt struct {
+	union json.RawMessage
+}
+
+// ProjectListItem defines model for ProjectListItem.
+type ProjectListItem struct {
+	ActivePreviewEnvironments int                       `json:"activePreviewEnvironments"`
+	BasePath                  *string                   `json:"basePath,omitempty"`
+	BuildParameters           *[]BuildParameter         `json:"buildParameters,omitempty"`
+	ConnectorInstanceId       *string                   `json:"connectorInstanceId,omitempty"`
+	CreatedAt                 ProjectListItem_CreatedAt `json:"createdAt"`
+	DisplayName               string                    `json:"displayName"`
+	Enabled                   bool                      `json:"enabled"`
+	Framework                 string                    `json:"framework"`
+	GithubInstallationId      *int                      `json:"githubInstallationId,omitempty"`
+	Port                      *int                      `json:"port,omitempty"`
+	PreviewResourceLimit      ResourceLimit             `json:"previewResourceLimit"`
+	ProductionBranch          *string                   `json:"productionBranch,omitempty"`
+	ProductionResourceLimit   ResourceLimit             `json:"productionResourceLimit"`
+	ProjectId                 string                    `json:"projectId"`
+	Replicas                  *int                      `json:"replicas,omitempty"`
+	Repository                string                    `json:"repository"`
+	Slug                      string                    `json:"slug"`
+	TargetType                *string                   `json:"targetType,omitempty"`
+	UserId                    string                    `json:"userId"`
+	UserName                  string                    `json:"userName"`
+}
+
+// ProjectListItemCreatedAt0 defines model for .
+type ProjectListItemCreatedAt0 = string
+
+// ProjectListItemCreatedAt1 defines model for .
+type ProjectListItemCreatedAt1 = time.Time
+
+// ProjectListItem_CreatedAt defines model for ProjectListItem.CreatedAt.
+type ProjectListItem_CreatedAt struct {
+	union json.RawMessage
+}
+
+// ProjectWithCounts defines model for ProjectWithCounts.
+type ProjectWithCounts struct {
+	ActivePreviewEnvironments int                         `json:"activePreviewEnvironments"`
+	BasePath                  *string                     `json:"basePath,omitempty"`
+	BuildParameters           *[]BuildParameter           `json:"buildParameters,omitempty"`
+	ConnectorInstanceId       *string                     `json:"connectorInstanceId,omitempty"`
+	CreatedAt                 ProjectWithCounts_CreatedAt `json:"createdAt"`
+	DisplayName               string                      `json:"displayName"`
+	Enabled                   bool                        `json:"enabled"`
+	Framework                 string                      `json:"framework"`
+	GithubInstallationId      *int                        `json:"githubInstallationId,omitempty"`
+	Port                      *int                        `json:"port,omitempty"`
+	PreviewResourceLimit      ResourceLimit               `json:"previewResourceLimit"`
+	ProductionBranch          *string                     `json:"productionBranch,omitempty"`
+	ProductionResourceLimit   ResourceLimit               `json:"productionResourceLimit"`
+	ProjectId                 string                      `json:"projectId"`
+	Replicas                  *int                        `json:"replicas,omitempty"`
+	Repository                string                      `json:"repository"`
+	Slug                      string                      `json:"slug"`
+	TargetType                *string                     `json:"targetType,omitempty"`
+	UserId                    string                      `json:"userId"`
+}
+
+// ProjectWithCountsCreatedAt0 defines model for .
+type ProjectWithCountsCreatedAt0 = string
+
+// ProjectWithCountsCreatedAt1 defines model for .
+type ProjectWithCountsCreatedAt1 = time.Time
+
+// ProjectWithCounts_CreatedAt defines model for ProjectWithCounts.CreatedAt.
+type ProjectWithCounts_CreatedAt struct {
+	union json.RawMessage
+}
+
+// QosPolicy defines model for QosPolicy.
+type QosPolicy struct {
+	PriorityClassName string               `json:"priorityClassName"`
+	QosPolicyId       QosPolicyQosPolicyId `json:"qosPolicyId"`
+	Resources         struct {
+		RequestFactor struct {
+			Cpu              float32 `json:"cpu"`
+			EphemeralStorage float32 `json:"ephemeralStorage"`
+			Memory           float32 `json:"memory"`
+		} `json:"requestFactor"`
+	} `json:"resources"`
+}
+
+// QosPolicyQosPolicyId defines model for QosPolicy.QosPolicyId.
+type QosPolicyQosPolicyId string
+
+// ResourceLimit defines model for ResourceLimit.
+type ResourceLimit struct {
+	Cpu    float32 `json:"cpu"`
+	Memory float32 `json:"memory"`
+}
+
+// ResourceTemplate defines model for ResourceTemplate.
+type ResourceTemplate struct {
+	Description string `json:"description"`
+	DisplayName string `json:"displayName"`
+	MemoryMb    int    `json:"memoryMb"`
+	MilliCpu    int    `json:"milliCpu"`
+	StorageMb   int    `json:"storageMb"`
+}
+
+// User defines model for User.
+type User struct {
+	AcceptedTerms bool   `json:"acceptedTerms"`
+	Blocked       bool   `json:"blocked"`
+	Email         string `json:"email"`
+	Image         string `json:"image"`
+	Installations []struct {
+		GithubInstallationId int `json:"githubInstallationId"`
+	} `json:"installations"`
+	Name                 string   `json:"name"`
+	Role                 UserRole `json:"role"`
+	StripeSubscriptionId *string  `json:"stripeSubscriptionId"`
+	UserId               string   `json:"userId"`
+}
+
+// UserRole defines model for UserRole.
+type UserRole string
+
+// Variable defines model for Variable.
+type Variable struct {
+	EnvironmentId Variable_EnvironmentId `json:"environmentId"`
+	Name          string                 `json:"name"`
+	Value         string                 `json:"value"`
+	VariableId    *string                `json:"variableId,omitempty"`
+}
+
+// VariableEnvironmentId0 defines model for Variable.EnvironmentId.0.
+type VariableEnvironmentId0 string
+
+// VariableEnvironmentId1 defines model for .
+type VariableEnvironmentId1 = string
+
+// Variable_EnvironmentId defines model for Variable.EnvironmentId.
+type Variable_EnvironmentId struct {
 	union json.RawMessage
 }
 
@@ -57,222 +515,46 @@ type ProjectListParams struct {
 	TargetType *string `form:"targetType,omitempty" json:"targetType,omitempty"`
 }
 
-// ProjectList200JSONResponseBodyDataBuildParametersValue0 defines parameters for ProjectList.
-type ProjectList200JSONResponseBodyDataBuildParametersValue0 = string
-
-// ProjectList200JSONResponseBodyDataBuildParametersValue1 defines parameters for ProjectList.
-type ProjectList200JSONResponseBodyDataBuildParametersValue1 = bool
-
-// ProjectList200JSONResponseBody_Data_BuildParameters_Value defines parameters for ProjectList.
-type ProjectList200JSONResponseBody_Data_BuildParameters_Value struct {
-	union json.RawMessage
-}
-
-// ProjectList200JSONResponseBodyDataConnectorInstanceId0 defines parameters for ProjectList.
-type ProjectList200JSONResponseBodyDataConnectorInstanceId0 = string
-
-// ProjectList200JSONResponseBody_Data_ConnectorInstanceId defines parameters for ProjectList.
-type ProjectList200JSONResponseBody_Data_ConnectorInstanceId struct {
-	union json.RawMessage
-}
-
-// ProjectList200JSONResponseBodyDataCreatedAt0 defines parameters for ProjectList.
-type ProjectList200JSONResponseBodyDataCreatedAt0 = string
-
-// ProjectList200JSONResponseBodyDataCreatedAt1 defines parameters for ProjectList.
-type ProjectList200JSONResponseBodyDataCreatedAt1 = time.Time
-
-// ProjectList200JSONResponseBody_Data_CreatedAt defines parameters for ProjectList.
-type ProjectList200JSONResponseBody_Data_CreatedAt struct {
-	union json.RawMessage
-}
-
-// ProjectList200JSONResponseBodyDataGithubInstallationId0 defines parameters for ProjectList.
-type ProjectList200JSONResponseBodyDataGithubInstallationId0 = float32
-
-// ProjectList200JSONResponseBody_Data_GithubInstallationId defines parameters for ProjectList.
-type ProjectList200JSONResponseBody_Data_GithubInstallationId struct {
-	union json.RawMessage
-}
-
 // ProjectCreateJSONBody defines parameters for ProjectCreate.
 type ProjectCreateJSONBody struct {
-	ActiveEnvironments *[]string `json:"activeEnvironments,omitempty"`
-	BasePath           *string   `json:"basePath,omitempty"`
-	BuildParameters    *[]struct {
-		Key   string                                       `json:"key"`
-		Value *ProjectCreateJSONBody_BuildParameters_Value `json:"value,omitempty"`
-	} `json:"buildParameters,omitempty"`
-	ConnectorInstanceId  *ProjectCreateJSONBody_ConnectorInstanceId  `json:"connectorInstanceId,omitempty"`
-	DisplayName          string                                      `json:"displayName"`
-	Framework            string                                      `json:"framework"`
-	GithubInstallationId *ProjectCreateJSONBody_GithubInstallationId `json:"githubInstallationId,omitempty"`
-	Port                 *float32                                    `json:"port,omitempty"`
-	PreviewResourceLimit struct {
-		Cpu    float32 `json:"cpu"`
-		Memory float32 `json:"memory"`
-	} `json:"previewResourceLimit"`
-	ProductionBranch        *string `json:"productionBranch,omitempty"`
-	ProductionResourceLimit struct {
-		Cpu    float32 `json:"cpu"`
-		Memory float32 `json:"memory"`
-	} `json:"productionResourceLimit"`
-	Replicas           *float32 `json:"replicas,omitempty"`
-	Repository         string   `json:"repository"`
-	TargetType         *string  `json:"targetType,omitempty"`
-	UnstableTargetType *string  `json:"unstable_targetType,omitempty"`
-}
-
-// ProjectCreateJSONBodyBuildParametersValue0 defines parameters for ProjectCreate.
-type ProjectCreateJSONBodyBuildParametersValue0 = string
-
-// ProjectCreateJSONBodyBuildParametersValue1 defines parameters for ProjectCreate.
-type ProjectCreateJSONBodyBuildParametersValue1 = bool
-
-// ProjectCreateJSONBody_BuildParameters_Value defines parameters for ProjectCreate.
-type ProjectCreateJSONBody_BuildParameters_Value struct {
-	union json.RawMessage
-}
-
-// ProjectCreateJSONBodyConnectorInstanceId0 defines parameters for ProjectCreate.
-type ProjectCreateJSONBodyConnectorInstanceId0 = string
-
-// ProjectCreateJSONBody_ConnectorInstanceId defines parameters for ProjectCreate.
-type ProjectCreateJSONBody_ConnectorInstanceId struct {
-	union json.RawMessage
-}
-
-// ProjectCreateJSONBodyGithubInstallationId0 defines parameters for ProjectCreate.
-type ProjectCreateJSONBodyGithubInstallationId0 = float32
-
-// ProjectCreateJSONBody_GithubInstallationId defines parameters for ProjectCreate.
-type ProjectCreateJSONBody_GithubInstallationId struct {
-	union json.RawMessage
-}
-
-// ProjectGet200JSONResponseBodyBuildParametersValue0 defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBodyBuildParametersValue0 = string
-
-// ProjectGet200JSONResponseBodyBuildParametersValue1 defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBodyBuildParametersValue1 = bool
-
-// ProjectGet200JSONResponseBody_BuildParameters_Value defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBody_BuildParameters_Value struct {
-	union json.RawMessage
-}
-
-// ProjectGet200JSONResponseBodyConnectorInstanceId0 defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBodyConnectorInstanceId0 = string
-
-// ProjectGet200JSONResponseBody_ConnectorInstanceId defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBody_ConnectorInstanceId struct {
-	union json.RawMessage
-}
-
-// ProjectGet200JSONResponseBodyCreatedAt0 defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBodyCreatedAt0 = string
-
-// ProjectGet200JSONResponseBodyCreatedAt1 defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBodyCreatedAt1 = time.Time
-
-// ProjectGet200JSONResponseBody_CreatedAt defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBody_CreatedAt struct {
-	union json.RawMessage
-}
-
-// ProjectGet200JSONResponseBodyGithubInstallationId0 defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBodyGithubInstallationId0 = float32
-
-// ProjectGet200JSONResponseBody_GithubInstallationId defines parameters for ProjectGet.
-type ProjectGet200JSONResponseBody_GithubInstallationId struct {
-	union json.RawMessage
+	ActiveEnvironments      *[]string         `json:"activeEnvironments,omitempty"`
+	BasePath                *string           `json:"basePath,omitempty"`
+	BuildParameters         *[]BuildParameter `json:"buildParameters,omitempty"`
+	ConnectorInstanceId     *string           `json:"connectorInstanceId,omitempty"`
+	DisplayName             string            `json:"displayName"`
+	Framework               string            `json:"framework"`
+	GithubInstallationId    *int              `json:"githubInstallationId,omitempty"`
+	Port                    *int              `json:"port,omitempty"`
+	PreviewResourceLimit    ResourceLimit     `json:"previewResourceLimit"`
+	ProductionBranch        *string           `json:"productionBranch,omitempty"`
+	ProductionResourceLimit ResourceLimit     `json:"productionResourceLimit"`
+	Replicas                *int              `json:"replicas,omitempty"`
+	Repository              string            `json:"repository"`
+	TargetType              *string           `json:"targetType,omitempty"`
+	UnstableTargetType      *string           `json:"unstable_targetType,omitempty"`
 }
 
 // ProjectUpdateJSONBody defines parameters for ProjectUpdate.
 type ProjectUpdateJSONBody struct {
-	BasePath        *string `json:"basePath,omitempty"`
-	BuildParameters *[]struct {
-		Key   string                                       `json:"key"`
-		Value *ProjectUpdateJSONBody_BuildParameters_Value `json:"value,omitempty"`
-	} `json:"buildParameters,omitempty"`
-	DisplayName          *string  `json:"displayName,omitempty"`
-	Framework            *string  `json:"framework,omitempty"`
-	Port                 *float32 `json:"port,omitempty"`
-	PreviewResourceLimit *struct {
-		Cpu    float32 `json:"cpu"`
-		Memory float32 `json:"memory"`
-	} `json:"previewResourceLimit,omitempty"`
-	ProductionBranch        *string `json:"productionBranch,omitempty"`
-	ProductionResourceLimit *struct {
-		Cpu    float32 `json:"cpu"`
-		Memory float32 `json:"memory"`
-	} `json:"productionResourceLimit,omitempty"`
-}
-
-// ProjectUpdateJSONBodyBuildParametersValue0 defines parameters for ProjectUpdate.
-type ProjectUpdateJSONBodyBuildParametersValue0 = string
-
-// ProjectUpdateJSONBodyBuildParametersValue1 defines parameters for ProjectUpdate.
-type ProjectUpdateJSONBodyBuildParametersValue1 = bool
-
-// ProjectUpdateJSONBody_BuildParameters_Value defines parameters for ProjectUpdate.
-type ProjectUpdateJSONBody_BuildParameters_Value struct {
-	union json.RawMessage
-}
-
-// ProjectAclList200JSONResponseBodyDataCreatedAt0 defines parameters for ProjectAclList.
-type ProjectAclList200JSONResponseBodyDataCreatedAt0 = string
-
-// ProjectAclList200JSONResponseBodyDataCreatedAt1 defines parameters for ProjectAclList.
-type ProjectAclList200JSONResponseBodyDataCreatedAt1 = time.Time
-
-// ProjectAclList200JSONResponseBody_Data_CreatedAt defines parameters for ProjectAclList.
-type ProjectAclList200JSONResponseBody_Data_CreatedAt struct {
-	union json.RawMessage
-}
-
-// ProjectAclList200JSONResponseBodyDataUpdatedAt0 defines parameters for ProjectAclList.
-type ProjectAclList200JSONResponseBodyDataUpdatedAt0 = string
-
-// ProjectAclList200JSONResponseBodyDataUpdatedAt1 defines parameters for ProjectAclList.
-type ProjectAclList200JSONResponseBodyDataUpdatedAt1 = time.Time
-
-// ProjectAclList200JSONResponseBody_Data_UpdatedAt defines parameters for ProjectAclList.
-type ProjectAclList200JSONResponseBody_Data_UpdatedAt struct {
-	union json.RawMessage
+	BasePath                *string           `json:"basePath,omitempty"`
+	BuildParameters         *[]BuildParameter `json:"buildParameters,omitempty"`
+	DisplayName             *string           `json:"displayName,omitempty"`
+	Framework               *string           `json:"framework,omitempty"`
+	Port                    *int              `json:"port,omitempty"`
+	PreviewResourceLimit    *ResourceLimit    `json:"previewResourceLimit,omitempty"`
+	ProductionBranch        *string           `json:"productionBranch,omitempty"`
+	ProductionResourceLimit *ResourceLimit    `json:"productionResourceLimit,omitempty"`
 }
 
 // ProjectAclCreateJSONBody defines parameters for ProjectAclCreate.
 type ProjectAclCreateJSONBody struct {
-	Role   interface{} `json:"role"`
-	UserId string      `json:"userId"`
-}
-
-// ProjectAclGet200JSONResponseBodyCreatedAt0 defines parameters for ProjectAclGet.
-type ProjectAclGet200JSONResponseBodyCreatedAt0 = string
-
-// ProjectAclGet200JSONResponseBodyCreatedAt1 defines parameters for ProjectAclGet.
-type ProjectAclGet200JSONResponseBodyCreatedAt1 = time.Time
-
-// ProjectAclGet200JSONResponseBody_CreatedAt defines parameters for ProjectAclGet.
-type ProjectAclGet200JSONResponseBody_CreatedAt struct {
-	union json.RawMessage
-}
-
-// ProjectAclGet200JSONResponseBodyUpdatedAt0 defines parameters for ProjectAclGet.
-type ProjectAclGet200JSONResponseBodyUpdatedAt0 = string
-
-// ProjectAclGet200JSONResponseBodyUpdatedAt1 defines parameters for ProjectAclGet.
-type ProjectAclGet200JSONResponseBodyUpdatedAt1 = time.Time
-
-// ProjectAclGet200JSONResponseBody_UpdatedAt defines parameters for ProjectAclGet.
-type ProjectAclGet200JSONResponseBody_UpdatedAt struct {
-	union json.RawMessage
+	Role   AclRole `json:"role"`
+	UserId string  `json:"userId"`
 }
 
 // ProjectAclUpdateJSONBody defines parameters for ProjectAclUpdate.
 type ProjectAclUpdateJSONBody struct {
-	Role interface{} `json:"role"`
+	Role AclRole `json:"role"`
 }
 
 // ProjectEnvironmentsUpdateJSONBody defines parameters for ProjectEnvironmentsUpdate.
@@ -282,170 +564,18 @@ type ProjectEnvironmentsUpdateJSONBody struct {
 
 // ProjectEnvironmentsDeploymentsListParams defines parameters for ProjectEnvironmentsDeploymentsList.
 type ProjectEnvironmentsDeploymentsListParams struct {
-	State interface{} `json:"state,omitempty"`
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0 = string
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0 = string
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0 = string
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0 = string
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0 = string
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0 defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt defines parameters for ProjectEnvironmentsDeploymentsList.
-type ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt struct {
-	union json.RawMessage
+	State *DeploymentState `json:"state,omitempty"`
 }
 
 // ProjectEnvironmentsDeploymentsPatchJSONBody defines parameters for ProjectEnvironmentsDeploymentsPatch.
 type ProjectEnvironmentsDeploymentsPatchJSONBody struct {
-	BuildFinishedAt  *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt  `json:"buildFinishedAt,omitempty"`
-	BuildStartedAt   *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt   `json:"buildStartedAt,omitempty"`
-	CancelledAt      *ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt      `json:"cancelledAt,omitempty"`
-	DeployFinishedAt *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt `json:"deployFinishedAt,omitempty"`
-	DeployStartedAt  *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt  `json:"deployStartedAt,omitempty"`
-	DisabledAt       *ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt       `json:"disabledAt,omitempty"`
-	Image            *ProjectEnvironmentsDeploymentsPatchJSONBody_Image            `json:"image,omitempty"`
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0 = time.Time
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt struct {
-	union json.RawMessage
-}
-
-// ProjectEnvironmentsDeploymentsPatchJSONBodyImage0 defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBodyImage0 = string
-
-// ProjectEnvironmentsDeploymentsPatchJSONBody_Image defines parameters for ProjectEnvironmentsDeploymentsPatch.
-type ProjectEnvironmentsDeploymentsPatchJSONBody_Image struct {
-	union json.RawMessage
+	BuildFinishedAt  *time.Time `json:"buildFinishedAt,omitempty"`
+	BuildStartedAt   *time.Time `json:"buildStartedAt,omitempty"`
+	CancelledAt      *time.Time `json:"cancelledAt,omitempty"`
+	DeployFinishedAt *time.Time `json:"deployFinishedAt,omitempty"`
+	DeployStartedAt  *time.Time `json:"deployStartedAt,omitempty"`
+	DisabledAt       *time.Time `json:"disabledAt,omitempty"`
+	Image            *string    `json:"image,omitempty"`
 }
 
 // ProjectEnvironmentsDeploymentsRedeployJSONBody defines parameters for ProjectEnvironmentsDeploymentsRedeploy.
@@ -472,71 +602,20 @@ type ProjectVariablesListParams struct {
 }
 
 // ProjectVariablesListParamsEnvironmentId0 defines parameters for ProjectVariablesList.
-type ProjectVariablesListParamsEnvironmentId0 = interface{}
+type ProjectVariablesListParamsEnvironmentId0 string
 
 // ProjectVariablesListParamsEnvironmentId1 defines parameters for ProjectVariablesList.
 type ProjectVariablesListParamsEnvironmentId1 = string
 
-// ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0 defines parameters for ProjectVariablesList.
-type ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0 = interface{}
-
-// ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1 defines parameters for ProjectVariablesList.
-type ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1 = string
-
-// ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId defines parameters for ProjectVariablesList.
-type ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId struct {
-	union json.RawMessage
-}
-
 // ProjectVariablesUpsertJSONBody defines parameters for ProjectVariablesUpsert.
 type ProjectVariablesUpsertJSONBody struct {
-	Variables []struct {
-		EnvironmentId ProjectVariablesUpsertJSONBody_Variables_EnvironmentId `json:"environmentId"`
-		Name          string                                                 `json:"name"`
-		Value         string                                                 `json:"value"`
-		VariableId    *string                                                `json:"variableId,omitempty"`
-	} `json:"variables"`
-}
-
-// ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0 defines parameters for ProjectVariablesUpsert.
-type ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0 = interface{}
-
-// ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1 defines parameters for ProjectVariablesUpsert.
-type ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1 = string
-
-// ProjectVariablesUpsertJSONBody_Variables_EnvironmentId defines parameters for ProjectVariablesUpsert.
-type ProjectVariablesUpsertJSONBody_Variables_EnvironmentId struct {
-	union json.RawMessage
-}
-
-// UserList200JSONResponseBodyDataStripeSubscriptionId0 defines parameters for UserList.
-type UserList200JSONResponseBodyDataStripeSubscriptionId0 = string
-
-// UserList200JSONResponseBody_Data_StripeSubscriptionId defines parameters for UserList.
-type UserList200JSONResponseBody_Data_StripeSubscriptionId struct {
-	union json.RawMessage
-}
-
-// UserMe200JSONResponseBodyStripeSubscriptionId0 defines parameters for UserMe.
-type UserMe200JSONResponseBodyStripeSubscriptionId0 = string
-
-// UserMe200JSONResponseBody_StripeSubscriptionId defines parameters for UserMe.
-type UserMe200JSONResponseBody_StripeSubscriptionId struct {
-	union json.RawMessage
+	Variables []Variable `json:"variables"`
 }
 
 // UserSearchParams defines parameters for UserSearch.
 type UserSearchParams struct {
 	Q  *string `form:"q,omitempty" json:"q,omitempty"`
 	Id *string `form:"id,omitempty" json:"id,omitempty"`
-}
-
-// UserGet200JSONResponseBodyStripeSubscriptionId0 defines parameters for UserGet.
-type UserGet200JSONResponseBodyStripeSubscriptionId0 = string
-
-// UserGet200JSONResponseBody_StripeSubscriptionId defines parameters for UserGet.
-type UserGet200JSONResponseBody_StripeSubscriptionId struct {
-	union json.RawMessage
 }
 
 // ProjectCreateJSONRequestBody defines body for ProjectCreate for application/json ContentType.
@@ -569,22 +648,22 @@ type ProjectVariablesDeleteJSONRequestBody ProjectVariablesDeleteJSONBody
 // ProjectVariablesUpsertJSONRequestBody defines body for ProjectVariablesUpsert for application/json ContentType.
 type ProjectVariablesUpsertJSONRequestBody ProjectVariablesUpsertJSONBody
 
-// AsFrameworkList200JSONResponseBodyDataBuildOptionsDefault0 returns the union data inside the FrameworkList200JSONResponseBody_Data_BuildOptions_Default as a FrameworkList200JSONResponseBodyDataBuildOptionsDefault0
-func (t FrameworkList200JSONResponseBody_Data_BuildOptions_Default) AsFrameworkList200JSONResponseBodyDataBuildOptionsDefault0() (FrameworkList200JSONResponseBodyDataBuildOptionsDefault0, error) {
-	var body FrameworkList200JSONResponseBodyDataBuildOptionsDefault0
+// AsBuildOptionDefault0 returns the union data inside the BuildOption_Default as a BuildOptionDefault0
+func (t BuildOption_Default) AsBuildOptionDefault0() (BuildOptionDefault0, error) {
+	var body BuildOptionDefault0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrameworkList200JSONResponseBodyDataBuildOptionsDefault0 overwrites any union data inside the FrameworkList200JSONResponseBody_Data_BuildOptions_Default as the provided FrameworkList200JSONResponseBodyDataBuildOptionsDefault0
-func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) FromFrameworkList200JSONResponseBodyDataBuildOptionsDefault0(v FrameworkList200JSONResponseBodyDataBuildOptionsDefault0) error {
+// FromBuildOptionDefault0 overwrites any union data inside the BuildOption_Default as the provided BuildOptionDefault0
+func (t *BuildOption_Default) FromBuildOptionDefault0(v BuildOptionDefault0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrameworkList200JSONResponseBodyDataBuildOptionsDefault0 performs a merge with any union data inside the FrameworkList200JSONResponseBody_Data_BuildOptions_Default, using the provided FrameworkList200JSONResponseBodyDataBuildOptionsDefault0
-func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) MergeFrameworkList200JSONResponseBodyDataBuildOptionsDefault0(v FrameworkList200JSONResponseBodyDataBuildOptionsDefault0) error {
+// MergeBuildOptionDefault0 performs a merge with any union data inside the BuildOption_Default, using the provided BuildOptionDefault0
+func (t *BuildOption_Default) MergeBuildOptionDefault0(v BuildOptionDefault0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -595,22 +674,22 @@ func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) MergeFramew
 	return err
 }
 
-// AsFrameworkList200JSONResponseBodyDataBuildOptionsDefault1 returns the union data inside the FrameworkList200JSONResponseBody_Data_BuildOptions_Default as a FrameworkList200JSONResponseBodyDataBuildOptionsDefault1
-func (t FrameworkList200JSONResponseBody_Data_BuildOptions_Default) AsFrameworkList200JSONResponseBodyDataBuildOptionsDefault1() (FrameworkList200JSONResponseBodyDataBuildOptionsDefault1, error) {
-	var body FrameworkList200JSONResponseBodyDataBuildOptionsDefault1
+// AsBuildOptionDefault1 returns the union data inside the BuildOption_Default as a BuildOptionDefault1
+func (t BuildOption_Default) AsBuildOptionDefault1() (BuildOptionDefault1, error) {
+	var body BuildOptionDefault1
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrameworkList200JSONResponseBodyDataBuildOptionsDefault1 overwrites any union data inside the FrameworkList200JSONResponseBody_Data_BuildOptions_Default as the provided FrameworkList200JSONResponseBodyDataBuildOptionsDefault1
-func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) FromFrameworkList200JSONResponseBodyDataBuildOptionsDefault1(v FrameworkList200JSONResponseBodyDataBuildOptionsDefault1) error {
+// FromBuildOptionDefault1 overwrites any union data inside the BuildOption_Default as the provided BuildOptionDefault1
+func (t *BuildOption_Default) FromBuildOptionDefault1(v BuildOptionDefault1) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrameworkList200JSONResponseBodyDataBuildOptionsDefault1 performs a merge with any union data inside the FrameworkList200JSONResponseBody_Data_BuildOptions_Default, using the provided FrameworkList200JSONResponseBodyDataBuildOptionsDefault1
-func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) MergeFrameworkList200JSONResponseBodyDataBuildOptionsDefault1(v FrameworkList200JSONResponseBodyDataBuildOptionsDefault1) error {
+// MergeBuildOptionDefault1 performs a merge with any union data inside the BuildOption_Default, using the provided BuildOptionDefault1
+func (t *BuildOption_Default) MergeBuildOptionDefault1(v BuildOptionDefault1) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -621,32 +700,32 @@ func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) MergeFramew
 	return err
 }
 
-func (t FrameworkList200JSONResponseBody_Data_BuildOptions_Default) MarshalJSON() ([]byte, error) {
+func (t BuildOption_Default) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *FrameworkList200JSONResponseBody_Data_BuildOptions_Default) UnmarshalJSON(b []byte) error {
+func (t *BuildOption_Default) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsFrameworkGet200JSONResponseBodyBuildOptionsDefault0 returns the union data inside the FrameworkGet200JSONResponseBody_BuildOptions_Default as a FrameworkGet200JSONResponseBodyBuildOptionsDefault0
-func (t FrameworkGet200JSONResponseBody_BuildOptions_Default) AsFrameworkGet200JSONResponseBodyBuildOptionsDefault0() (FrameworkGet200JSONResponseBodyBuildOptionsDefault0, error) {
-	var body FrameworkGet200JSONResponseBodyBuildOptionsDefault0
+// AsBuildParameterValue0 returns the union data inside the BuildParameter_Value as a BuildParameterValue0
+func (t BuildParameter_Value) AsBuildParameterValue0() (BuildParameterValue0, error) {
+	var body BuildParameterValue0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrameworkGet200JSONResponseBodyBuildOptionsDefault0 overwrites any union data inside the FrameworkGet200JSONResponseBody_BuildOptions_Default as the provided FrameworkGet200JSONResponseBodyBuildOptionsDefault0
-func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) FromFrameworkGet200JSONResponseBodyBuildOptionsDefault0(v FrameworkGet200JSONResponseBodyBuildOptionsDefault0) error {
+// FromBuildParameterValue0 overwrites any union data inside the BuildParameter_Value as the provided BuildParameterValue0
+func (t *BuildParameter_Value) FromBuildParameterValue0(v BuildParameterValue0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrameworkGet200JSONResponseBodyBuildOptionsDefault0 performs a merge with any union data inside the FrameworkGet200JSONResponseBody_BuildOptions_Default, using the provided FrameworkGet200JSONResponseBodyBuildOptionsDefault0
-func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) MergeFrameworkGet200JSONResponseBodyBuildOptionsDefault0(v FrameworkGet200JSONResponseBodyBuildOptionsDefault0) error {
+// MergeBuildParameterValue0 performs a merge with any union data inside the BuildParameter_Value, using the provided BuildParameterValue0
+func (t *BuildParameter_Value) MergeBuildParameterValue0(v BuildParameterValue0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -657,22 +736,22 @@ func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) MergeFrameworkGet
 	return err
 }
 
-// AsFrameworkGet200JSONResponseBodyBuildOptionsDefault1 returns the union data inside the FrameworkGet200JSONResponseBody_BuildOptions_Default as a FrameworkGet200JSONResponseBodyBuildOptionsDefault1
-func (t FrameworkGet200JSONResponseBody_BuildOptions_Default) AsFrameworkGet200JSONResponseBodyBuildOptionsDefault1() (FrameworkGet200JSONResponseBodyBuildOptionsDefault1, error) {
-	var body FrameworkGet200JSONResponseBodyBuildOptionsDefault1
+// AsBuildParameterValue1 returns the union data inside the BuildParameter_Value as a BuildParameterValue1
+func (t BuildParameter_Value) AsBuildParameterValue1() (BuildParameterValue1, error) {
+	var body BuildParameterValue1
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromFrameworkGet200JSONResponseBodyBuildOptionsDefault1 overwrites any union data inside the FrameworkGet200JSONResponseBody_BuildOptions_Default as the provided FrameworkGet200JSONResponseBodyBuildOptionsDefault1
-func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) FromFrameworkGet200JSONResponseBodyBuildOptionsDefault1(v FrameworkGet200JSONResponseBodyBuildOptionsDefault1) error {
+// FromBuildParameterValue1 overwrites any union data inside the BuildParameter_Value as the provided BuildParameterValue1
+func (t *BuildParameter_Value) FromBuildParameterValue1(v BuildParameterValue1) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeFrameworkGet200JSONResponseBodyBuildOptionsDefault1 performs a merge with any union data inside the FrameworkGet200JSONResponseBody_BuildOptions_Default, using the provided FrameworkGet200JSONResponseBodyBuildOptionsDefault1
-func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) MergeFrameworkGet200JSONResponseBodyBuildOptionsDefault1(v FrameworkGet200JSONResponseBodyBuildOptionsDefault1) error {
+// MergeBuildParameterValue1 performs a merge with any union data inside the BuildParameter_Value, using the provided BuildParameterValue1
+func (t *BuildParameter_Value) MergeBuildParameterValue1(v BuildParameterValue1) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -683,32 +762,32 @@ func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) MergeFrameworkGet
 	return err
 }
 
-func (t FrameworkGet200JSONResponseBody_BuildOptions_Default) MarshalJSON() ([]byte, error) {
+func (t BuildParameter_Value) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *FrameworkGet200JSONResponseBody_BuildOptions_Default) UnmarshalJSON(b []byte) error {
+func (t *BuildParameter_Value) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsProjectList200JSONResponseBodyDataBuildParametersValue0 returns the union data inside the ProjectList200JSONResponseBody_Data_BuildParameters_Value as a ProjectList200JSONResponseBodyDataBuildParametersValue0
-func (t ProjectList200JSONResponseBody_Data_BuildParameters_Value) AsProjectList200JSONResponseBodyDataBuildParametersValue0() (ProjectList200JSONResponseBodyDataBuildParametersValue0, error) {
-	var body ProjectList200JSONResponseBodyDataBuildParametersValue0
+// AsProjectCreatedAt0 returns the union data inside the Project_CreatedAt as a ProjectCreatedAt0
+func (t Project_CreatedAt) AsProjectCreatedAt0() (ProjectCreatedAt0, error) {
+	var body ProjectCreatedAt0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectList200JSONResponseBodyDataBuildParametersValue0 overwrites any union data inside the ProjectList200JSONResponseBody_Data_BuildParameters_Value as the provided ProjectList200JSONResponseBodyDataBuildParametersValue0
-func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) FromProjectList200JSONResponseBodyDataBuildParametersValue0(v ProjectList200JSONResponseBodyDataBuildParametersValue0) error {
+// FromProjectCreatedAt0 overwrites any union data inside the Project_CreatedAt as the provided ProjectCreatedAt0
+func (t *Project_CreatedAt) FromProjectCreatedAt0(v ProjectCreatedAt0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectList200JSONResponseBodyDataBuildParametersValue0 performs a merge with any union data inside the ProjectList200JSONResponseBody_Data_BuildParameters_Value, using the provided ProjectList200JSONResponseBodyDataBuildParametersValue0
-func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) MergeProjectList200JSONResponseBodyDataBuildParametersValue0(v ProjectList200JSONResponseBodyDataBuildParametersValue0) error {
+// MergeProjectCreatedAt0 performs a merge with any union data inside the Project_CreatedAt, using the provided ProjectCreatedAt0
+func (t *Project_CreatedAt) MergeProjectCreatedAt0(v ProjectCreatedAt0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -719,22 +798,22 @@ func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) MergeProject
 	return err
 }
 
-// AsProjectList200JSONResponseBodyDataBuildParametersValue1 returns the union data inside the ProjectList200JSONResponseBody_Data_BuildParameters_Value as a ProjectList200JSONResponseBodyDataBuildParametersValue1
-func (t ProjectList200JSONResponseBody_Data_BuildParameters_Value) AsProjectList200JSONResponseBodyDataBuildParametersValue1() (ProjectList200JSONResponseBodyDataBuildParametersValue1, error) {
-	var body ProjectList200JSONResponseBodyDataBuildParametersValue1
+// AsProjectCreatedAt1 returns the union data inside the Project_CreatedAt as a ProjectCreatedAt1
+func (t Project_CreatedAt) AsProjectCreatedAt1() (ProjectCreatedAt1, error) {
+	var body ProjectCreatedAt1
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectList200JSONResponseBodyDataBuildParametersValue1 overwrites any union data inside the ProjectList200JSONResponseBody_Data_BuildParameters_Value as the provided ProjectList200JSONResponseBodyDataBuildParametersValue1
-func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) FromProjectList200JSONResponseBodyDataBuildParametersValue1(v ProjectList200JSONResponseBodyDataBuildParametersValue1) error {
+// FromProjectCreatedAt1 overwrites any union data inside the Project_CreatedAt as the provided ProjectCreatedAt1
+func (t *Project_CreatedAt) FromProjectCreatedAt1(v ProjectCreatedAt1) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectList200JSONResponseBodyDataBuildParametersValue1 performs a merge with any union data inside the ProjectList200JSONResponseBody_Data_BuildParameters_Value, using the provided ProjectList200JSONResponseBodyDataBuildParametersValue1
-func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) MergeProjectList200JSONResponseBodyDataBuildParametersValue1(v ProjectList200JSONResponseBodyDataBuildParametersValue1) error {
+// MergeProjectCreatedAt1 performs a merge with any union data inside the Project_CreatedAt, using the provided ProjectCreatedAt1
+func (t *Project_CreatedAt) MergeProjectCreatedAt1(v ProjectCreatedAt1) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -745,32 +824,32 @@ func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) MergeProject
 	return err
 }
 
-func (t ProjectList200JSONResponseBody_Data_BuildParameters_Value) MarshalJSON() ([]byte, error) {
+func (t Project_CreatedAt) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *ProjectList200JSONResponseBody_Data_BuildParameters_Value) UnmarshalJSON(b []byte) error {
+func (t *Project_CreatedAt) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsProjectList200JSONResponseBodyDataConnectorInstanceId0 returns the union data inside the ProjectList200JSONResponseBody_Data_ConnectorInstanceId as a ProjectList200JSONResponseBodyDataConnectorInstanceId0
-func (t ProjectList200JSONResponseBody_Data_ConnectorInstanceId) AsProjectList200JSONResponseBodyDataConnectorInstanceId0() (ProjectList200JSONResponseBodyDataConnectorInstanceId0, error) {
-	var body ProjectList200JSONResponseBodyDataConnectorInstanceId0
+// AsProjectAclCreatedAt0 returns the union data inside the ProjectAcl_CreatedAt as a ProjectAclCreatedAt0
+func (t ProjectAcl_CreatedAt) AsProjectAclCreatedAt0() (ProjectAclCreatedAt0, error) {
+	var body ProjectAclCreatedAt0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectList200JSONResponseBodyDataConnectorInstanceId0 overwrites any union data inside the ProjectList200JSONResponseBody_Data_ConnectorInstanceId as the provided ProjectList200JSONResponseBodyDataConnectorInstanceId0
-func (t *ProjectList200JSONResponseBody_Data_ConnectorInstanceId) FromProjectList200JSONResponseBodyDataConnectorInstanceId0(v ProjectList200JSONResponseBodyDataConnectorInstanceId0) error {
+// FromProjectAclCreatedAt0 overwrites any union data inside the ProjectAcl_CreatedAt as the provided ProjectAclCreatedAt0
+func (t *ProjectAcl_CreatedAt) FromProjectAclCreatedAt0(v ProjectAclCreatedAt0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectList200JSONResponseBodyDataConnectorInstanceId0 performs a merge with any union data inside the ProjectList200JSONResponseBody_Data_ConnectorInstanceId, using the provided ProjectList200JSONResponseBodyDataConnectorInstanceId0
-func (t *ProjectList200JSONResponseBody_Data_ConnectorInstanceId) MergeProjectList200JSONResponseBodyDataConnectorInstanceId0(v ProjectList200JSONResponseBodyDataConnectorInstanceId0) error {
+// MergeProjectAclCreatedAt0 performs a merge with any union data inside the ProjectAcl_CreatedAt, using the provided ProjectAclCreatedAt0
+func (t *ProjectAcl_CreatedAt) MergeProjectAclCreatedAt0(v ProjectAclCreatedAt0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -781,32 +860,58 @@ func (t *ProjectList200JSONResponseBody_Data_ConnectorInstanceId) MergeProjectLi
 	return err
 }
 
-func (t ProjectList200JSONResponseBody_Data_ConnectorInstanceId) MarshalJSON() ([]byte, error) {
+// AsProjectAclCreatedAt1 returns the union data inside the ProjectAcl_CreatedAt as a ProjectAclCreatedAt1
+func (t ProjectAcl_CreatedAt) AsProjectAclCreatedAt1() (ProjectAclCreatedAt1, error) {
+	var body ProjectAclCreatedAt1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromProjectAclCreatedAt1 overwrites any union data inside the ProjectAcl_CreatedAt as the provided ProjectAclCreatedAt1
+func (t *ProjectAcl_CreatedAt) FromProjectAclCreatedAt1(v ProjectAclCreatedAt1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeProjectAclCreatedAt1 performs a merge with any union data inside the ProjectAcl_CreatedAt, using the provided ProjectAclCreatedAt1
+func (t *ProjectAcl_CreatedAt) MergeProjectAclCreatedAt1(v ProjectAclCreatedAt1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ProjectAcl_CreatedAt) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *ProjectList200JSONResponseBody_Data_ConnectorInstanceId) UnmarshalJSON(b []byte) error {
+func (t *ProjectAcl_CreatedAt) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsProjectList200JSONResponseBodyDataCreatedAt0 returns the union data inside the ProjectList200JSONResponseBody_Data_CreatedAt as a ProjectList200JSONResponseBodyDataCreatedAt0
-func (t ProjectList200JSONResponseBody_Data_CreatedAt) AsProjectList200JSONResponseBodyDataCreatedAt0() (ProjectList200JSONResponseBodyDataCreatedAt0, error) {
-	var body ProjectList200JSONResponseBodyDataCreatedAt0
+// AsProjectAclUpdatedAt0 returns the union data inside the ProjectAcl_UpdatedAt as a ProjectAclUpdatedAt0
+func (t ProjectAcl_UpdatedAt) AsProjectAclUpdatedAt0() (ProjectAclUpdatedAt0, error) {
+	var body ProjectAclUpdatedAt0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectList200JSONResponseBodyDataCreatedAt0 overwrites any union data inside the ProjectList200JSONResponseBody_Data_CreatedAt as the provided ProjectList200JSONResponseBodyDataCreatedAt0
-func (t *ProjectList200JSONResponseBody_Data_CreatedAt) FromProjectList200JSONResponseBodyDataCreatedAt0(v ProjectList200JSONResponseBodyDataCreatedAt0) error {
+// FromProjectAclUpdatedAt0 overwrites any union data inside the ProjectAcl_UpdatedAt as the provided ProjectAclUpdatedAt0
+func (t *ProjectAcl_UpdatedAt) FromProjectAclUpdatedAt0(v ProjectAclUpdatedAt0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectList200JSONResponseBodyDataCreatedAt0 performs a merge with any union data inside the ProjectList200JSONResponseBody_Data_CreatedAt, using the provided ProjectList200JSONResponseBodyDataCreatedAt0
-func (t *ProjectList200JSONResponseBody_Data_CreatedAt) MergeProjectList200JSONResponseBodyDataCreatedAt0(v ProjectList200JSONResponseBodyDataCreatedAt0) error {
+// MergeProjectAclUpdatedAt0 performs a merge with any union data inside the ProjectAcl_UpdatedAt, using the provided ProjectAclUpdatedAt0
+func (t *ProjectAcl_UpdatedAt) MergeProjectAclUpdatedAt0(v ProjectAclUpdatedAt0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -817,22 +922,22 @@ func (t *ProjectList200JSONResponseBody_Data_CreatedAt) MergeProjectList200JSONR
 	return err
 }
 
-// AsProjectList200JSONResponseBodyDataCreatedAt1 returns the union data inside the ProjectList200JSONResponseBody_Data_CreatedAt as a ProjectList200JSONResponseBodyDataCreatedAt1
-func (t ProjectList200JSONResponseBody_Data_CreatedAt) AsProjectList200JSONResponseBodyDataCreatedAt1() (ProjectList200JSONResponseBodyDataCreatedAt1, error) {
-	var body ProjectList200JSONResponseBodyDataCreatedAt1
+// AsProjectAclUpdatedAt1 returns the union data inside the ProjectAcl_UpdatedAt as a ProjectAclUpdatedAt1
+func (t ProjectAcl_UpdatedAt) AsProjectAclUpdatedAt1() (ProjectAclUpdatedAt1, error) {
+	var body ProjectAclUpdatedAt1
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectList200JSONResponseBodyDataCreatedAt1 overwrites any union data inside the ProjectList200JSONResponseBody_Data_CreatedAt as the provided ProjectList200JSONResponseBodyDataCreatedAt1
-func (t *ProjectList200JSONResponseBody_Data_CreatedAt) FromProjectList200JSONResponseBodyDataCreatedAt1(v ProjectList200JSONResponseBodyDataCreatedAt1) error {
+// FromProjectAclUpdatedAt1 overwrites any union data inside the ProjectAcl_UpdatedAt as the provided ProjectAclUpdatedAt1
+func (t *ProjectAcl_UpdatedAt) FromProjectAclUpdatedAt1(v ProjectAclUpdatedAt1) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectList200JSONResponseBodyDataCreatedAt1 performs a merge with any union data inside the ProjectList200JSONResponseBody_Data_CreatedAt, using the provided ProjectList200JSONResponseBodyDataCreatedAt1
-func (t *ProjectList200JSONResponseBody_Data_CreatedAt) MergeProjectList200JSONResponseBodyDataCreatedAt1(v ProjectList200JSONResponseBodyDataCreatedAt1) error {
+// MergeProjectAclUpdatedAt1 performs a merge with any union data inside the ProjectAcl_UpdatedAt, using the provided ProjectAclUpdatedAt1
+func (t *ProjectAcl_UpdatedAt) MergeProjectAclUpdatedAt1(v ProjectAclUpdatedAt1) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -843,32 +948,32 @@ func (t *ProjectList200JSONResponseBody_Data_CreatedAt) MergeProjectList200JSONR
 	return err
 }
 
-func (t ProjectList200JSONResponseBody_Data_CreatedAt) MarshalJSON() ([]byte, error) {
+func (t ProjectAcl_UpdatedAt) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *ProjectList200JSONResponseBody_Data_CreatedAt) UnmarshalJSON(b []byte) error {
+func (t *ProjectAcl_UpdatedAt) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsProjectList200JSONResponseBodyDataGithubInstallationId0 returns the union data inside the ProjectList200JSONResponseBody_Data_GithubInstallationId as a ProjectList200JSONResponseBodyDataGithubInstallationId0
-func (t ProjectList200JSONResponseBody_Data_GithubInstallationId) AsProjectList200JSONResponseBodyDataGithubInstallationId0() (ProjectList200JSONResponseBodyDataGithubInstallationId0, error) {
-	var body ProjectList200JSONResponseBodyDataGithubInstallationId0
+// AsProjectListItemCreatedAt0 returns the union data inside the ProjectListItem_CreatedAt as a ProjectListItemCreatedAt0
+func (t ProjectListItem_CreatedAt) AsProjectListItemCreatedAt0() (ProjectListItemCreatedAt0, error) {
+	var body ProjectListItemCreatedAt0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectList200JSONResponseBodyDataGithubInstallationId0 overwrites any union data inside the ProjectList200JSONResponseBody_Data_GithubInstallationId as the provided ProjectList200JSONResponseBodyDataGithubInstallationId0
-func (t *ProjectList200JSONResponseBody_Data_GithubInstallationId) FromProjectList200JSONResponseBodyDataGithubInstallationId0(v ProjectList200JSONResponseBodyDataGithubInstallationId0) error {
+// FromProjectListItemCreatedAt0 overwrites any union data inside the ProjectListItem_CreatedAt as the provided ProjectListItemCreatedAt0
+func (t *ProjectListItem_CreatedAt) FromProjectListItemCreatedAt0(v ProjectListItemCreatedAt0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectList200JSONResponseBodyDataGithubInstallationId0 performs a merge with any union data inside the ProjectList200JSONResponseBody_Data_GithubInstallationId, using the provided ProjectList200JSONResponseBodyDataGithubInstallationId0
-func (t *ProjectList200JSONResponseBody_Data_GithubInstallationId) MergeProjectList200JSONResponseBodyDataGithubInstallationId0(v ProjectList200JSONResponseBodyDataGithubInstallationId0) error {
+// MergeProjectListItemCreatedAt0 performs a merge with any union data inside the ProjectListItem_CreatedAt, using the provided ProjectListItemCreatedAt0
+func (t *ProjectListItem_CreatedAt) MergeProjectListItemCreatedAt0(v ProjectListItemCreatedAt0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -879,32 +984,58 @@ func (t *ProjectList200JSONResponseBody_Data_GithubInstallationId) MergeProjectL
 	return err
 }
 
-func (t ProjectList200JSONResponseBody_Data_GithubInstallationId) MarshalJSON() ([]byte, error) {
+// AsProjectListItemCreatedAt1 returns the union data inside the ProjectListItem_CreatedAt as a ProjectListItemCreatedAt1
+func (t ProjectListItem_CreatedAt) AsProjectListItemCreatedAt1() (ProjectListItemCreatedAt1, error) {
+	var body ProjectListItemCreatedAt1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromProjectListItemCreatedAt1 overwrites any union data inside the ProjectListItem_CreatedAt as the provided ProjectListItemCreatedAt1
+func (t *ProjectListItem_CreatedAt) FromProjectListItemCreatedAt1(v ProjectListItemCreatedAt1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeProjectListItemCreatedAt1 performs a merge with any union data inside the ProjectListItem_CreatedAt, using the provided ProjectListItemCreatedAt1
+func (t *ProjectListItem_CreatedAt) MergeProjectListItemCreatedAt1(v ProjectListItemCreatedAt1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t ProjectListItem_CreatedAt) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *ProjectList200JSONResponseBody_Data_GithubInstallationId) UnmarshalJSON(b []byte) error {
+func (t *ProjectListItem_CreatedAt) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsProjectCreateJSONBodyBuildParametersValue0 returns the union data inside the ProjectCreateJSONBody_BuildParameters_Value as a ProjectCreateJSONBodyBuildParametersValue0
-func (t ProjectCreateJSONBody_BuildParameters_Value) AsProjectCreateJSONBodyBuildParametersValue0() (ProjectCreateJSONBodyBuildParametersValue0, error) {
-	var body ProjectCreateJSONBodyBuildParametersValue0
+// AsProjectWithCountsCreatedAt0 returns the union data inside the ProjectWithCounts_CreatedAt as a ProjectWithCountsCreatedAt0
+func (t ProjectWithCounts_CreatedAt) AsProjectWithCountsCreatedAt0() (ProjectWithCountsCreatedAt0, error) {
+	var body ProjectWithCountsCreatedAt0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectCreateJSONBodyBuildParametersValue0 overwrites any union data inside the ProjectCreateJSONBody_BuildParameters_Value as the provided ProjectCreateJSONBodyBuildParametersValue0
-func (t *ProjectCreateJSONBody_BuildParameters_Value) FromProjectCreateJSONBodyBuildParametersValue0(v ProjectCreateJSONBodyBuildParametersValue0) error {
+// FromProjectWithCountsCreatedAt0 overwrites any union data inside the ProjectWithCounts_CreatedAt as the provided ProjectWithCountsCreatedAt0
+func (t *ProjectWithCounts_CreatedAt) FromProjectWithCountsCreatedAt0(v ProjectWithCountsCreatedAt0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectCreateJSONBodyBuildParametersValue0 performs a merge with any union data inside the ProjectCreateJSONBody_BuildParameters_Value, using the provided ProjectCreateJSONBodyBuildParametersValue0
-func (t *ProjectCreateJSONBody_BuildParameters_Value) MergeProjectCreateJSONBodyBuildParametersValue0(v ProjectCreateJSONBodyBuildParametersValue0) error {
+// MergeProjectWithCountsCreatedAt0 performs a merge with any union data inside the ProjectWithCounts_CreatedAt, using the provided ProjectWithCountsCreatedAt0
+func (t *ProjectWithCounts_CreatedAt) MergeProjectWithCountsCreatedAt0(v ProjectWithCountsCreatedAt0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -915,22 +1046,22 @@ func (t *ProjectCreateJSONBody_BuildParameters_Value) MergeProjectCreateJSONBody
 	return err
 }
 
-// AsProjectCreateJSONBodyBuildParametersValue1 returns the union data inside the ProjectCreateJSONBody_BuildParameters_Value as a ProjectCreateJSONBodyBuildParametersValue1
-func (t ProjectCreateJSONBody_BuildParameters_Value) AsProjectCreateJSONBodyBuildParametersValue1() (ProjectCreateJSONBodyBuildParametersValue1, error) {
-	var body ProjectCreateJSONBodyBuildParametersValue1
+// AsProjectWithCountsCreatedAt1 returns the union data inside the ProjectWithCounts_CreatedAt as a ProjectWithCountsCreatedAt1
+func (t ProjectWithCounts_CreatedAt) AsProjectWithCountsCreatedAt1() (ProjectWithCountsCreatedAt1, error) {
+	var body ProjectWithCountsCreatedAt1
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectCreateJSONBodyBuildParametersValue1 overwrites any union data inside the ProjectCreateJSONBody_BuildParameters_Value as the provided ProjectCreateJSONBodyBuildParametersValue1
-func (t *ProjectCreateJSONBody_BuildParameters_Value) FromProjectCreateJSONBodyBuildParametersValue1(v ProjectCreateJSONBodyBuildParametersValue1) error {
+// FromProjectWithCountsCreatedAt1 overwrites any union data inside the ProjectWithCounts_CreatedAt as the provided ProjectWithCountsCreatedAt1
+func (t *ProjectWithCounts_CreatedAt) FromProjectWithCountsCreatedAt1(v ProjectWithCountsCreatedAt1) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectCreateJSONBodyBuildParametersValue1 performs a merge with any union data inside the ProjectCreateJSONBody_BuildParameters_Value, using the provided ProjectCreateJSONBodyBuildParametersValue1
-func (t *ProjectCreateJSONBody_BuildParameters_Value) MergeProjectCreateJSONBodyBuildParametersValue1(v ProjectCreateJSONBodyBuildParametersValue1) error {
+// MergeProjectWithCountsCreatedAt1 performs a merge with any union data inside the ProjectWithCounts_CreatedAt, using the provided ProjectWithCountsCreatedAt1
+func (t *ProjectWithCounts_CreatedAt) MergeProjectWithCountsCreatedAt1(v ProjectWithCountsCreatedAt1) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -941,32 +1072,32 @@ func (t *ProjectCreateJSONBody_BuildParameters_Value) MergeProjectCreateJSONBody
 	return err
 }
 
-func (t ProjectCreateJSONBody_BuildParameters_Value) MarshalJSON() ([]byte, error) {
+func (t ProjectWithCounts_CreatedAt) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *ProjectCreateJSONBody_BuildParameters_Value) UnmarshalJSON(b []byte) error {
+func (t *ProjectWithCounts_CreatedAt) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
 
-// AsProjectCreateJSONBodyConnectorInstanceId0 returns the union data inside the ProjectCreateJSONBody_ConnectorInstanceId as a ProjectCreateJSONBodyConnectorInstanceId0
-func (t ProjectCreateJSONBody_ConnectorInstanceId) AsProjectCreateJSONBodyConnectorInstanceId0() (ProjectCreateJSONBodyConnectorInstanceId0, error) {
-	var body ProjectCreateJSONBodyConnectorInstanceId0
+// AsVariableEnvironmentId0 returns the union data inside the Variable_EnvironmentId as a VariableEnvironmentId0
+func (t Variable_EnvironmentId) AsVariableEnvironmentId0() (VariableEnvironmentId0, error) {
+	var body VariableEnvironmentId0
 	err := json.Unmarshal(t.union, &body)
 	return body, err
 }
 
-// FromProjectCreateJSONBodyConnectorInstanceId0 overwrites any union data inside the ProjectCreateJSONBody_ConnectorInstanceId as the provided ProjectCreateJSONBodyConnectorInstanceId0
-func (t *ProjectCreateJSONBody_ConnectorInstanceId) FromProjectCreateJSONBodyConnectorInstanceId0(v ProjectCreateJSONBodyConnectorInstanceId0) error {
+// FromVariableEnvironmentId0 overwrites any union data inside the Variable_EnvironmentId as the provided VariableEnvironmentId0
+func (t *Variable_EnvironmentId) FromVariableEnvironmentId0(v VariableEnvironmentId0) error {
 	b, err := json.Marshal(v)
 	t.union = b
 	return err
 }
 
-// MergeProjectCreateJSONBodyConnectorInstanceId0 performs a merge with any union data inside the ProjectCreateJSONBody_ConnectorInstanceId, using the provided ProjectCreateJSONBodyConnectorInstanceId0
-func (t *ProjectCreateJSONBody_ConnectorInstanceId) MergeProjectCreateJSONBodyConnectorInstanceId0(v ProjectCreateJSONBodyConnectorInstanceId0) error {
+// MergeVariableEnvironmentId0 performs a merge with any union data inside the Variable_EnvironmentId, using the provided VariableEnvironmentId0
+func (t *Variable_EnvironmentId) MergeVariableEnvironmentId0(v VariableEnvironmentId0) error {
 	b, err := json.Marshal(v)
 	if err != nil {
 		return err
@@ -977,1470 +1108,38 @@ func (t *ProjectCreateJSONBody_ConnectorInstanceId) MergeProjectCreateJSONBodyCo
 	return err
 }
 
-func (t ProjectCreateJSONBody_ConnectorInstanceId) MarshalJSON() ([]byte, error) {
+// AsVariableEnvironmentId1 returns the union data inside the Variable_EnvironmentId as a VariableEnvironmentId1
+func (t Variable_EnvironmentId) AsVariableEnvironmentId1() (VariableEnvironmentId1, error) {
+	var body VariableEnvironmentId1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromVariableEnvironmentId1 overwrites any union data inside the Variable_EnvironmentId as the provided VariableEnvironmentId1
+func (t *Variable_EnvironmentId) FromVariableEnvironmentId1(v VariableEnvironmentId1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeVariableEnvironmentId1 performs a merge with any union data inside the Variable_EnvironmentId, using the provided VariableEnvironmentId1
+func (t *Variable_EnvironmentId) MergeVariableEnvironmentId1(v VariableEnvironmentId1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t Variable_EnvironmentId) MarshalJSON() ([]byte, error) {
 	b, err := t.union.MarshalJSON()
 	return b, err
 }
 
-func (t *ProjectCreateJSONBody_ConnectorInstanceId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectCreateJSONBodyGithubInstallationId0 returns the union data inside the ProjectCreateJSONBody_GithubInstallationId as a ProjectCreateJSONBodyGithubInstallationId0
-func (t ProjectCreateJSONBody_GithubInstallationId) AsProjectCreateJSONBodyGithubInstallationId0() (ProjectCreateJSONBodyGithubInstallationId0, error) {
-	var body ProjectCreateJSONBodyGithubInstallationId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectCreateJSONBodyGithubInstallationId0 overwrites any union data inside the ProjectCreateJSONBody_GithubInstallationId as the provided ProjectCreateJSONBodyGithubInstallationId0
-func (t *ProjectCreateJSONBody_GithubInstallationId) FromProjectCreateJSONBodyGithubInstallationId0(v ProjectCreateJSONBodyGithubInstallationId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectCreateJSONBodyGithubInstallationId0 performs a merge with any union data inside the ProjectCreateJSONBody_GithubInstallationId, using the provided ProjectCreateJSONBodyGithubInstallationId0
-func (t *ProjectCreateJSONBody_GithubInstallationId) MergeProjectCreateJSONBodyGithubInstallationId0(v ProjectCreateJSONBodyGithubInstallationId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectCreateJSONBody_GithubInstallationId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectCreateJSONBody_GithubInstallationId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectGet200JSONResponseBodyBuildParametersValue0 returns the union data inside the ProjectGet200JSONResponseBody_BuildParameters_Value as a ProjectGet200JSONResponseBodyBuildParametersValue0
-func (t ProjectGet200JSONResponseBody_BuildParameters_Value) AsProjectGet200JSONResponseBodyBuildParametersValue0() (ProjectGet200JSONResponseBodyBuildParametersValue0, error) {
-	var body ProjectGet200JSONResponseBodyBuildParametersValue0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectGet200JSONResponseBodyBuildParametersValue0 overwrites any union data inside the ProjectGet200JSONResponseBody_BuildParameters_Value as the provided ProjectGet200JSONResponseBodyBuildParametersValue0
-func (t *ProjectGet200JSONResponseBody_BuildParameters_Value) FromProjectGet200JSONResponseBodyBuildParametersValue0(v ProjectGet200JSONResponseBodyBuildParametersValue0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectGet200JSONResponseBodyBuildParametersValue0 performs a merge with any union data inside the ProjectGet200JSONResponseBody_BuildParameters_Value, using the provided ProjectGet200JSONResponseBodyBuildParametersValue0
-func (t *ProjectGet200JSONResponseBody_BuildParameters_Value) MergeProjectGet200JSONResponseBodyBuildParametersValue0(v ProjectGet200JSONResponseBodyBuildParametersValue0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectGet200JSONResponseBodyBuildParametersValue1 returns the union data inside the ProjectGet200JSONResponseBody_BuildParameters_Value as a ProjectGet200JSONResponseBodyBuildParametersValue1
-func (t ProjectGet200JSONResponseBody_BuildParameters_Value) AsProjectGet200JSONResponseBodyBuildParametersValue1() (ProjectGet200JSONResponseBodyBuildParametersValue1, error) {
-	var body ProjectGet200JSONResponseBodyBuildParametersValue1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectGet200JSONResponseBodyBuildParametersValue1 overwrites any union data inside the ProjectGet200JSONResponseBody_BuildParameters_Value as the provided ProjectGet200JSONResponseBodyBuildParametersValue1
-func (t *ProjectGet200JSONResponseBody_BuildParameters_Value) FromProjectGet200JSONResponseBodyBuildParametersValue1(v ProjectGet200JSONResponseBodyBuildParametersValue1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectGet200JSONResponseBodyBuildParametersValue1 performs a merge with any union data inside the ProjectGet200JSONResponseBody_BuildParameters_Value, using the provided ProjectGet200JSONResponseBodyBuildParametersValue1
-func (t *ProjectGet200JSONResponseBody_BuildParameters_Value) MergeProjectGet200JSONResponseBodyBuildParametersValue1(v ProjectGet200JSONResponseBodyBuildParametersValue1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectGet200JSONResponseBody_BuildParameters_Value) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectGet200JSONResponseBody_BuildParameters_Value) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectGet200JSONResponseBodyConnectorInstanceId0 returns the union data inside the ProjectGet200JSONResponseBody_ConnectorInstanceId as a ProjectGet200JSONResponseBodyConnectorInstanceId0
-func (t ProjectGet200JSONResponseBody_ConnectorInstanceId) AsProjectGet200JSONResponseBodyConnectorInstanceId0() (ProjectGet200JSONResponseBodyConnectorInstanceId0, error) {
-	var body ProjectGet200JSONResponseBodyConnectorInstanceId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectGet200JSONResponseBodyConnectorInstanceId0 overwrites any union data inside the ProjectGet200JSONResponseBody_ConnectorInstanceId as the provided ProjectGet200JSONResponseBodyConnectorInstanceId0
-func (t *ProjectGet200JSONResponseBody_ConnectorInstanceId) FromProjectGet200JSONResponseBodyConnectorInstanceId0(v ProjectGet200JSONResponseBodyConnectorInstanceId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectGet200JSONResponseBodyConnectorInstanceId0 performs a merge with any union data inside the ProjectGet200JSONResponseBody_ConnectorInstanceId, using the provided ProjectGet200JSONResponseBodyConnectorInstanceId0
-func (t *ProjectGet200JSONResponseBody_ConnectorInstanceId) MergeProjectGet200JSONResponseBodyConnectorInstanceId0(v ProjectGet200JSONResponseBodyConnectorInstanceId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectGet200JSONResponseBody_ConnectorInstanceId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectGet200JSONResponseBody_ConnectorInstanceId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectGet200JSONResponseBodyCreatedAt0 returns the union data inside the ProjectGet200JSONResponseBody_CreatedAt as a ProjectGet200JSONResponseBodyCreatedAt0
-func (t ProjectGet200JSONResponseBody_CreatedAt) AsProjectGet200JSONResponseBodyCreatedAt0() (ProjectGet200JSONResponseBodyCreatedAt0, error) {
-	var body ProjectGet200JSONResponseBodyCreatedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectGet200JSONResponseBodyCreatedAt0 overwrites any union data inside the ProjectGet200JSONResponseBody_CreatedAt as the provided ProjectGet200JSONResponseBodyCreatedAt0
-func (t *ProjectGet200JSONResponseBody_CreatedAt) FromProjectGet200JSONResponseBodyCreatedAt0(v ProjectGet200JSONResponseBodyCreatedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectGet200JSONResponseBodyCreatedAt0 performs a merge with any union data inside the ProjectGet200JSONResponseBody_CreatedAt, using the provided ProjectGet200JSONResponseBodyCreatedAt0
-func (t *ProjectGet200JSONResponseBody_CreatedAt) MergeProjectGet200JSONResponseBodyCreatedAt0(v ProjectGet200JSONResponseBodyCreatedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectGet200JSONResponseBodyCreatedAt1 returns the union data inside the ProjectGet200JSONResponseBody_CreatedAt as a ProjectGet200JSONResponseBodyCreatedAt1
-func (t ProjectGet200JSONResponseBody_CreatedAt) AsProjectGet200JSONResponseBodyCreatedAt1() (ProjectGet200JSONResponseBodyCreatedAt1, error) {
-	var body ProjectGet200JSONResponseBodyCreatedAt1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectGet200JSONResponseBodyCreatedAt1 overwrites any union data inside the ProjectGet200JSONResponseBody_CreatedAt as the provided ProjectGet200JSONResponseBodyCreatedAt1
-func (t *ProjectGet200JSONResponseBody_CreatedAt) FromProjectGet200JSONResponseBodyCreatedAt1(v ProjectGet200JSONResponseBodyCreatedAt1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectGet200JSONResponseBodyCreatedAt1 performs a merge with any union data inside the ProjectGet200JSONResponseBody_CreatedAt, using the provided ProjectGet200JSONResponseBodyCreatedAt1
-func (t *ProjectGet200JSONResponseBody_CreatedAt) MergeProjectGet200JSONResponseBodyCreatedAt1(v ProjectGet200JSONResponseBodyCreatedAt1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectGet200JSONResponseBody_CreatedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectGet200JSONResponseBody_CreatedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectGet200JSONResponseBodyGithubInstallationId0 returns the union data inside the ProjectGet200JSONResponseBody_GithubInstallationId as a ProjectGet200JSONResponseBodyGithubInstallationId0
-func (t ProjectGet200JSONResponseBody_GithubInstallationId) AsProjectGet200JSONResponseBodyGithubInstallationId0() (ProjectGet200JSONResponseBodyGithubInstallationId0, error) {
-	var body ProjectGet200JSONResponseBodyGithubInstallationId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectGet200JSONResponseBodyGithubInstallationId0 overwrites any union data inside the ProjectGet200JSONResponseBody_GithubInstallationId as the provided ProjectGet200JSONResponseBodyGithubInstallationId0
-func (t *ProjectGet200JSONResponseBody_GithubInstallationId) FromProjectGet200JSONResponseBodyGithubInstallationId0(v ProjectGet200JSONResponseBodyGithubInstallationId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectGet200JSONResponseBodyGithubInstallationId0 performs a merge with any union data inside the ProjectGet200JSONResponseBody_GithubInstallationId, using the provided ProjectGet200JSONResponseBodyGithubInstallationId0
-func (t *ProjectGet200JSONResponseBody_GithubInstallationId) MergeProjectGet200JSONResponseBodyGithubInstallationId0(v ProjectGet200JSONResponseBodyGithubInstallationId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectGet200JSONResponseBody_GithubInstallationId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectGet200JSONResponseBody_GithubInstallationId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectUpdateJSONBodyBuildParametersValue0 returns the union data inside the ProjectUpdateJSONBody_BuildParameters_Value as a ProjectUpdateJSONBodyBuildParametersValue0
-func (t ProjectUpdateJSONBody_BuildParameters_Value) AsProjectUpdateJSONBodyBuildParametersValue0() (ProjectUpdateJSONBodyBuildParametersValue0, error) {
-	var body ProjectUpdateJSONBodyBuildParametersValue0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectUpdateJSONBodyBuildParametersValue0 overwrites any union data inside the ProjectUpdateJSONBody_BuildParameters_Value as the provided ProjectUpdateJSONBodyBuildParametersValue0
-func (t *ProjectUpdateJSONBody_BuildParameters_Value) FromProjectUpdateJSONBodyBuildParametersValue0(v ProjectUpdateJSONBodyBuildParametersValue0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectUpdateJSONBodyBuildParametersValue0 performs a merge with any union data inside the ProjectUpdateJSONBody_BuildParameters_Value, using the provided ProjectUpdateJSONBodyBuildParametersValue0
-func (t *ProjectUpdateJSONBody_BuildParameters_Value) MergeProjectUpdateJSONBodyBuildParametersValue0(v ProjectUpdateJSONBodyBuildParametersValue0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectUpdateJSONBodyBuildParametersValue1 returns the union data inside the ProjectUpdateJSONBody_BuildParameters_Value as a ProjectUpdateJSONBodyBuildParametersValue1
-func (t ProjectUpdateJSONBody_BuildParameters_Value) AsProjectUpdateJSONBodyBuildParametersValue1() (ProjectUpdateJSONBodyBuildParametersValue1, error) {
-	var body ProjectUpdateJSONBodyBuildParametersValue1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectUpdateJSONBodyBuildParametersValue1 overwrites any union data inside the ProjectUpdateJSONBody_BuildParameters_Value as the provided ProjectUpdateJSONBodyBuildParametersValue1
-func (t *ProjectUpdateJSONBody_BuildParameters_Value) FromProjectUpdateJSONBodyBuildParametersValue1(v ProjectUpdateJSONBodyBuildParametersValue1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectUpdateJSONBodyBuildParametersValue1 performs a merge with any union data inside the ProjectUpdateJSONBody_BuildParameters_Value, using the provided ProjectUpdateJSONBodyBuildParametersValue1
-func (t *ProjectUpdateJSONBody_BuildParameters_Value) MergeProjectUpdateJSONBodyBuildParametersValue1(v ProjectUpdateJSONBodyBuildParametersValue1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectUpdateJSONBody_BuildParameters_Value) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectUpdateJSONBody_BuildParameters_Value) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectAclList200JSONResponseBodyDataCreatedAt0 returns the union data inside the ProjectAclList200JSONResponseBody_Data_CreatedAt as a ProjectAclList200JSONResponseBodyDataCreatedAt0
-func (t ProjectAclList200JSONResponseBody_Data_CreatedAt) AsProjectAclList200JSONResponseBodyDataCreatedAt0() (ProjectAclList200JSONResponseBodyDataCreatedAt0, error) {
-	var body ProjectAclList200JSONResponseBodyDataCreatedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclList200JSONResponseBodyDataCreatedAt0 overwrites any union data inside the ProjectAclList200JSONResponseBody_Data_CreatedAt as the provided ProjectAclList200JSONResponseBodyDataCreatedAt0
-func (t *ProjectAclList200JSONResponseBody_Data_CreatedAt) FromProjectAclList200JSONResponseBodyDataCreatedAt0(v ProjectAclList200JSONResponseBodyDataCreatedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclList200JSONResponseBodyDataCreatedAt0 performs a merge with any union data inside the ProjectAclList200JSONResponseBody_Data_CreatedAt, using the provided ProjectAclList200JSONResponseBodyDataCreatedAt0
-func (t *ProjectAclList200JSONResponseBody_Data_CreatedAt) MergeProjectAclList200JSONResponseBodyDataCreatedAt0(v ProjectAclList200JSONResponseBodyDataCreatedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectAclList200JSONResponseBodyDataCreatedAt1 returns the union data inside the ProjectAclList200JSONResponseBody_Data_CreatedAt as a ProjectAclList200JSONResponseBodyDataCreatedAt1
-func (t ProjectAclList200JSONResponseBody_Data_CreatedAt) AsProjectAclList200JSONResponseBodyDataCreatedAt1() (ProjectAclList200JSONResponseBodyDataCreatedAt1, error) {
-	var body ProjectAclList200JSONResponseBodyDataCreatedAt1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclList200JSONResponseBodyDataCreatedAt1 overwrites any union data inside the ProjectAclList200JSONResponseBody_Data_CreatedAt as the provided ProjectAclList200JSONResponseBodyDataCreatedAt1
-func (t *ProjectAclList200JSONResponseBody_Data_CreatedAt) FromProjectAclList200JSONResponseBodyDataCreatedAt1(v ProjectAclList200JSONResponseBodyDataCreatedAt1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclList200JSONResponseBodyDataCreatedAt1 performs a merge with any union data inside the ProjectAclList200JSONResponseBody_Data_CreatedAt, using the provided ProjectAclList200JSONResponseBodyDataCreatedAt1
-func (t *ProjectAclList200JSONResponseBody_Data_CreatedAt) MergeProjectAclList200JSONResponseBodyDataCreatedAt1(v ProjectAclList200JSONResponseBodyDataCreatedAt1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectAclList200JSONResponseBody_Data_CreatedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectAclList200JSONResponseBody_Data_CreatedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectAclList200JSONResponseBodyDataUpdatedAt0 returns the union data inside the ProjectAclList200JSONResponseBody_Data_UpdatedAt as a ProjectAclList200JSONResponseBodyDataUpdatedAt0
-func (t ProjectAclList200JSONResponseBody_Data_UpdatedAt) AsProjectAclList200JSONResponseBodyDataUpdatedAt0() (ProjectAclList200JSONResponseBodyDataUpdatedAt0, error) {
-	var body ProjectAclList200JSONResponseBodyDataUpdatedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclList200JSONResponseBodyDataUpdatedAt0 overwrites any union data inside the ProjectAclList200JSONResponseBody_Data_UpdatedAt as the provided ProjectAclList200JSONResponseBodyDataUpdatedAt0
-func (t *ProjectAclList200JSONResponseBody_Data_UpdatedAt) FromProjectAclList200JSONResponseBodyDataUpdatedAt0(v ProjectAclList200JSONResponseBodyDataUpdatedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclList200JSONResponseBodyDataUpdatedAt0 performs a merge with any union data inside the ProjectAclList200JSONResponseBody_Data_UpdatedAt, using the provided ProjectAclList200JSONResponseBodyDataUpdatedAt0
-func (t *ProjectAclList200JSONResponseBody_Data_UpdatedAt) MergeProjectAclList200JSONResponseBodyDataUpdatedAt0(v ProjectAclList200JSONResponseBodyDataUpdatedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectAclList200JSONResponseBodyDataUpdatedAt1 returns the union data inside the ProjectAclList200JSONResponseBody_Data_UpdatedAt as a ProjectAclList200JSONResponseBodyDataUpdatedAt1
-func (t ProjectAclList200JSONResponseBody_Data_UpdatedAt) AsProjectAclList200JSONResponseBodyDataUpdatedAt1() (ProjectAclList200JSONResponseBodyDataUpdatedAt1, error) {
-	var body ProjectAclList200JSONResponseBodyDataUpdatedAt1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclList200JSONResponseBodyDataUpdatedAt1 overwrites any union data inside the ProjectAclList200JSONResponseBody_Data_UpdatedAt as the provided ProjectAclList200JSONResponseBodyDataUpdatedAt1
-func (t *ProjectAclList200JSONResponseBody_Data_UpdatedAt) FromProjectAclList200JSONResponseBodyDataUpdatedAt1(v ProjectAclList200JSONResponseBodyDataUpdatedAt1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclList200JSONResponseBodyDataUpdatedAt1 performs a merge with any union data inside the ProjectAclList200JSONResponseBody_Data_UpdatedAt, using the provided ProjectAclList200JSONResponseBodyDataUpdatedAt1
-func (t *ProjectAclList200JSONResponseBody_Data_UpdatedAt) MergeProjectAclList200JSONResponseBodyDataUpdatedAt1(v ProjectAclList200JSONResponseBodyDataUpdatedAt1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectAclList200JSONResponseBody_Data_UpdatedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectAclList200JSONResponseBody_Data_UpdatedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectAclGet200JSONResponseBodyCreatedAt0 returns the union data inside the ProjectAclGet200JSONResponseBody_CreatedAt as a ProjectAclGet200JSONResponseBodyCreatedAt0
-func (t ProjectAclGet200JSONResponseBody_CreatedAt) AsProjectAclGet200JSONResponseBodyCreatedAt0() (ProjectAclGet200JSONResponseBodyCreatedAt0, error) {
-	var body ProjectAclGet200JSONResponseBodyCreatedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclGet200JSONResponseBodyCreatedAt0 overwrites any union data inside the ProjectAclGet200JSONResponseBody_CreatedAt as the provided ProjectAclGet200JSONResponseBodyCreatedAt0
-func (t *ProjectAclGet200JSONResponseBody_CreatedAt) FromProjectAclGet200JSONResponseBodyCreatedAt0(v ProjectAclGet200JSONResponseBodyCreatedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclGet200JSONResponseBodyCreatedAt0 performs a merge with any union data inside the ProjectAclGet200JSONResponseBody_CreatedAt, using the provided ProjectAclGet200JSONResponseBodyCreatedAt0
-func (t *ProjectAclGet200JSONResponseBody_CreatedAt) MergeProjectAclGet200JSONResponseBodyCreatedAt0(v ProjectAclGet200JSONResponseBodyCreatedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectAclGet200JSONResponseBodyCreatedAt1 returns the union data inside the ProjectAclGet200JSONResponseBody_CreatedAt as a ProjectAclGet200JSONResponseBodyCreatedAt1
-func (t ProjectAclGet200JSONResponseBody_CreatedAt) AsProjectAclGet200JSONResponseBodyCreatedAt1() (ProjectAclGet200JSONResponseBodyCreatedAt1, error) {
-	var body ProjectAclGet200JSONResponseBodyCreatedAt1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclGet200JSONResponseBodyCreatedAt1 overwrites any union data inside the ProjectAclGet200JSONResponseBody_CreatedAt as the provided ProjectAclGet200JSONResponseBodyCreatedAt1
-func (t *ProjectAclGet200JSONResponseBody_CreatedAt) FromProjectAclGet200JSONResponseBodyCreatedAt1(v ProjectAclGet200JSONResponseBodyCreatedAt1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclGet200JSONResponseBodyCreatedAt1 performs a merge with any union data inside the ProjectAclGet200JSONResponseBody_CreatedAt, using the provided ProjectAclGet200JSONResponseBodyCreatedAt1
-func (t *ProjectAclGet200JSONResponseBody_CreatedAt) MergeProjectAclGet200JSONResponseBodyCreatedAt1(v ProjectAclGet200JSONResponseBodyCreatedAt1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectAclGet200JSONResponseBody_CreatedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectAclGet200JSONResponseBody_CreatedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectAclGet200JSONResponseBodyUpdatedAt0 returns the union data inside the ProjectAclGet200JSONResponseBody_UpdatedAt as a ProjectAclGet200JSONResponseBodyUpdatedAt0
-func (t ProjectAclGet200JSONResponseBody_UpdatedAt) AsProjectAclGet200JSONResponseBodyUpdatedAt0() (ProjectAclGet200JSONResponseBodyUpdatedAt0, error) {
-	var body ProjectAclGet200JSONResponseBodyUpdatedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclGet200JSONResponseBodyUpdatedAt0 overwrites any union data inside the ProjectAclGet200JSONResponseBody_UpdatedAt as the provided ProjectAclGet200JSONResponseBodyUpdatedAt0
-func (t *ProjectAclGet200JSONResponseBody_UpdatedAt) FromProjectAclGet200JSONResponseBodyUpdatedAt0(v ProjectAclGet200JSONResponseBodyUpdatedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclGet200JSONResponseBodyUpdatedAt0 performs a merge with any union data inside the ProjectAclGet200JSONResponseBody_UpdatedAt, using the provided ProjectAclGet200JSONResponseBodyUpdatedAt0
-func (t *ProjectAclGet200JSONResponseBody_UpdatedAt) MergeProjectAclGet200JSONResponseBodyUpdatedAt0(v ProjectAclGet200JSONResponseBodyUpdatedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectAclGet200JSONResponseBodyUpdatedAt1 returns the union data inside the ProjectAclGet200JSONResponseBody_UpdatedAt as a ProjectAclGet200JSONResponseBodyUpdatedAt1
-func (t ProjectAclGet200JSONResponseBody_UpdatedAt) AsProjectAclGet200JSONResponseBodyUpdatedAt1() (ProjectAclGet200JSONResponseBodyUpdatedAt1, error) {
-	var body ProjectAclGet200JSONResponseBodyUpdatedAt1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectAclGet200JSONResponseBodyUpdatedAt1 overwrites any union data inside the ProjectAclGet200JSONResponseBody_UpdatedAt as the provided ProjectAclGet200JSONResponseBodyUpdatedAt1
-func (t *ProjectAclGet200JSONResponseBody_UpdatedAt) FromProjectAclGet200JSONResponseBodyUpdatedAt1(v ProjectAclGet200JSONResponseBodyUpdatedAt1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectAclGet200JSONResponseBodyUpdatedAt1 performs a merge with any union data inside the ProjectAclGet200JSONResponseBody_UpdatedAt, using the provided ProjectAclGet200JSONResponseBodyUpdatedAt1
-func (t *ProjectAclGet200JSONResponseBody_UpdatedAt) MergeProjectAclGet200JSONResponseBodyUpdatedAt1(v ProjectAclGet200JSONResponseBodyUpdatedAt1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectAclGet200JSONResponseBody_UpdatedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectAclGet200JSONResponseBody_UpdatedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildFinishedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsBuildStartedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCancelledAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitMessage0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCommitUrl0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsCorrelationId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDefaultDomain0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployFinishedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDeployStartedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsDisabledAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsImage0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt as a ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt) AsProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0() (ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt as the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt) FromProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt, using the provided ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt) MergeProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0(v ProjectEnvironmentsDeploymentsList200JSONResponseBodyDeploymentsUpdatedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt as a ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt) AsProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0() (ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt) FromProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt) MergeProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyBuildFinishedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildFinishedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt as a ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt) AsProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0() (ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt) FromProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt) MergeProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyBuildStartedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_BuildStartedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt as a ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt) AsProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0() (ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt) FromProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt) MergeProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyCancelledAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_CancelledAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt as a ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt) AsProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0() (ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt) FromProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt) MergeProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyDeployFinishedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployFinishedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt as a ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt) AsProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0() (ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt) FromProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt) MergeProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyDeployStartedAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DeployStartedAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt as a ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt) AsProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0() (ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt) FromProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt) MergeProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0(v ProjectEnvironmentsDeploymentsPatchJSONBodyDisabledAt0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_DisabledAt) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectEnvironmentsDeploymentsPatchJSONBodyImage0 returns the union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_Image as a ProjectEnvironmentsDeploymentsPatchJSONBodyImage0
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_Image) AsProjectEnvironmentsDeploymentsPatchJSONBodyImage0() (ProjectEnvironmentsDeploymentsPatchJSONBodyImage0, error) {
-	var body ProjectEnvironmentsDeploymentsPatchJSONBodyImage0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectEnvironmentsDeploymentsPatchJSONBodyImage0 overwrites any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_Image as the provided ProjectEnvironmentsDeploymentsPatchJSONBodyImage0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_Image) FromProjectEnvironmentsDeploymentsPatchJSONBodyImage0(v ProjectEnvironmentsDeploymentsPatchJSONBodyImage0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectEnvironmentsDeploymentsPatchJSONBodyImage0 performs a merge with any union data inside the ProjectEnvironmentsDeploymentsPatchJSONBody_Image, using the provided ProjectEnvironmentsDeploymentsPatchJSONBodyImage0
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_Image) MergeProjectEnvironmentsDeploymentsPatchJSONBodyImage0(v ProjectEnvironmentsDeploymentsPatchJSONBodyImage0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectEnvironmentsDeploymentsPatchJSONBody_Image) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectEnvironmentsDeploymentsPatchJSONBody_Image) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0 returns the union data inside the ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId as a ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0
-func (t ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) AsProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0() (ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0, error) {
-	var body ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0 overwrites any union data inside the ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId as the provided ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0
-func (t *ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) FromProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0(v ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0 performs a merge with any union data inside the ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId, using the provided ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0
-func (t *ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) MergeProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0(v ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1 returns the union data inside the ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId as a ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1
-func (t ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) AsProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1() (ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1, error) {
-	var body ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1 overwrites any union data inside the ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId as the provided ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1
-func (t *ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) FromProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1(v ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1 performs a merge with any union data inside the ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId, using the provided ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1
-func (t *ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) MergeProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1(v ProjectVariablesList200JSONResponseBodyVariablesEnvironmentId1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsProjectVariablesUpsertJSONBodyVariablesEnvironmentId0 returns the union data inside the ProjectVariablesUpsertJSONBody_Variables_EnvironmentId as a ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0
-func (t ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) AsProjectVariablesUpsertJSONBodyVariablesEnvironmentId0() (ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0, error) {
-	var body ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectVariablesUpsertJSONBodyVariablesEnvironmentId0 overwrites any union data inside the ProjectVariablesUpsertJSONBody_Variables_EnvironmentId as the provided ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0
-func (t *ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) FromProjectVariablesUpsertJSONBodyVariablesEnvironmentId0(v ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectVariablesUpsertJSONBodyVariablesEnvironmentId0 performs a merge with any union data inside the ProjectVariablesUpsertJSONBody_Variables_EnvironmentId, using the provided ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0
-func (t *ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) MergeProjectVariablesUpsertJSONBodyVariablesEnvironmentId0(v ProjectVariablesUpsertJSONBodyVariablesEnvironmentId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-// AsProjectVariablesUpsertJSONBodyVariablesEnvironmentId1 returns the union data inside the ProjectVariablesUpsertJSONBody_Variables_EnvironmentId as a ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1
-func (t ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) AsProjectVariablesUpsertJSONBodyVariablesEnvironmentId1() (ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1, error) {
-	var body ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromProjectVariablesUpsertJSONBodyVariablesEnvironmentId1 overwrites any union data inside the ProjectVariablesUpsertJSONBody_Variables_EnvironmentId as the provided ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1
-func (t *ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) FromProjectVariablesUpsertJSONBodyVariablesEnvironmentId1(v ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeProjectVariablesUpsertJSONBodyVariablesEnvironmentId1 performs a merge with any union data inside the ProjectVariablesUpsertJSONBody_Variables_EnvironmentId, using the provided ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1
-func (t *ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) MergeProjectVariablesUpsertJSONBodyVariablesEnvironmentId1(v ProjectVariablesUpsertJSONBodyVariablesEnvironmentId1) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *ProjectVariablesUpsertJSONBody_Variables_EnvironmentId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsUserList200JSONResponseBodyDataStripeSubscriptionId0 returns the union data inside the UserList200JSONResponseBody_Data_StripeSubscriptionId as a UserList200JSONResponseBodyDataStripeSubscriptionId0
-func (t UserList200JSONResponseBody_Data_StripeSubscriptionId) AsUserList200JSONResponseBodyDataStripeSubscriptionId0() (UserList200JSONResponseBodyDataStripeSubscriptionId0, error) {
-	var body UserList200JSONResponseBodyDataStripeSubscriptionId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserList200JSONResponseBodyDataStripeSubscriptionId0 overwrites any union data inside the UserList200JSONResponseBody_Data_StripeSubscriptionId as the provided UserList200JSONResponseBodyDataStripeSubscriptionId0
-func (t *UserList200JSONResponseBody_Data_StripeSubscriptionId) FromUserList200JSONResponseBodyDataStripeSubscriptionId0(v UserList200JSONResponseBodyDataStripeSubscriptionId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserList200JSONResponseBodyDataStripeSubscriptionId0 performs a merge with any union data inside the UserList200JSONResponseBody_Data_StripeSubscriptionId, using the provided UserList200JSONResponseBodyDataStripeSubscriptionId0
-func (t *UserList200JSONResponseBody_Data_StripeSubscriptionId) MergeUserList200JSONResponseBodyDataStripeSubscriptionId0(v UserList200JSONResponseBodyDataStripeSubscriptionId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t UserList200JSONResponseBody_Data_StripeSubscriptionId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *UserList200JSONResponseBody_Data_StripeSubscriptionId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsUserMe200JSONResponseBodyStripeSubscriptionId0 returns the union data inside the UserMe200JSONResponseBody_StripeSubscriptionId as a UserMe200JSONResponseBodyStripeSubscriptionId0
-func (t UserMe200JSONResponseBody_StripeSubscriptionId) AsUserMe200JSONResponseBodyStripeSubscriptionId0() (UserMe200JSONResponseBodyStripeSubscriptionId0, error) {
-	var body UserMe200JSONResponseBodyStripeSubscriptionId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserMe200JSONResponseBodyStripeSubscriptionId0 overwrites any union data inside the UserMe200JSONResponseBody_StripeSubscriptionId as the provided UserMe200JSONResponseBodyStripeSubscriptionId0
-func (t *UserMe200JSONResponseBody_StripeSubscriptionId) FromUserMe200JSONResponseBodyStripeSubscriptionId0(v UserMe200JSONResponseBodyStripeSubscriptionId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserMe200JSONResponseBodyStripeSubscriptionId0 performs a merge with any union data inside the UserMe200JSONResponseBody_StripeSubscriptionId, using the provided UserMe200JSONResponseBodyStripeSubscriptionId0
-func (t *UserMe200JSONResponseBody_StripeSubscriptionId) MergeUserMe200JSONResponseBodyStripeSubscriptionId0(v UserMe200JSONResponseBodyStripeSubscriptionId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t UserMe200JSONResponseBody_StripeSubscriptionId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *UserMe200JSONResponseBody_StripeSubscriptionId) UnmarshalJSON(b []byte) error {
-	err := t.union.UnmarshalJSON(b)
-	return err
-}
-
-// AsUserGet200JSONResponseBodyStripeSubscriptionId0 returns the union data inside the UserGet200JSONResponseBody_StripeSubscriptionId as a UserGet200JSONResponseBodyStripeSubscriptionId0
-func (t UserGet200JSONResponseBody_StripeSubscriptionId) AsUserGet200JSONResponseBodyStripeSubscriptionId0() (UserGet200JSONResponseBodyStripeSubscriptionId0, error) {
-	var body UserGet200JSONResponseBodyStripeSubscriptionId0
-	err := json.Unmarshal(t.union, &body)
-	return body, err
-}
-
-// FromUserGet200JSONResponseBodyStripeSubscriptionId0 overwrites any union data inside the UserGet200JSONResponseBody_StripeSubscriptionId as the provided UserGet200JSONResponseBodyStripeSubscriptionId0
-func (t *UserGet200JSONResponseBody_StripeSubscriptionId) FromUserGet200JSONResponseBodyStripeSubscriptionId0(v UserGet200JSONResponseBodyStripeSubscriptionId0) error {
-	b, err := json.Marshal(v)
-	t.union = b
-	return err
-}
-
-// MergeUserGet200JSONResponseBodyStripeSubscriptionId0 performs a merge with any union data inside the UserGet200JSONResponseBody_StripeSubscriptionId, using the provided UserGet200JSONResponseBodyStripeSubscriptionId0
-func (t *UserGet200JSONResponseBody_StripeSubscriptionId) MergeUserGet200JSONResponseBodyStripeSubscriptionId0(v UserGet200JSONResponseBodyStripeSubscriptionId0) error {
-	b, err := json.Marshal(v)
-	if err != nil {
-		return err
-	}
-
-	merged, err := runtime.JSONMerge(t.union, b)
-	t.union = merged
-	return err
-}
-
-func (t UserGet200JSONResponseBody_StripeSubscriptionId) MarshalJSON() ([]byte, error) {
-	b, err := t.union.MarshalJSON()
-	return b, err
-}
-
-func (t *UserGet200JSONResponseBody_StripeSubscriptionId) UnmarshalJSON(b []byte) error {
+func (t *Variable_EnvironmentId) UnmarshalJSON(b []byte) error {
 	err := t.union.UnmarshalJSON(b)
 	return err
 }
@@ -3777,12 +2476,16 @@ func NewProjectEnvironmentsDeploymentsListRequest(server string, projectId strin
 		// per the OpenAPI spec (e.g. "color=blue,black,brown").
 		var rawQueryFragments []string
 
-		if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "state", params.State, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
-			return nil, err
-		} else {
-			for _, qp := range strings.Split(queryFrag, "&") {
-				rawQueryFragments = append(rawQueryFragments, qp)
+		if params.State != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("deepObject", true, "state", *params.State, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
 			}
+
 		}
 
 		if encoded := queryValues.Encode(); encoded != "" {
@@ -4656,32 +3359,7 @@ type FrameworkListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Data []struct {
-			BuildOptions []struct {
-				BuildOptionId string                                                      `json:"buildOptionId"`
-				Default       *FrameworkList200JSONResponseBody_Data_BuildOptions_Default `json:"default,omitempty"`
-				Description   string                                                      `json:"description"`
-				Enum          *[]string                                                   `json:"enum,omitempty"`
-				Name          string                                                      `json:"name"`
-				Required      bool                                                        `json:"required"`
-				Type          interface{}                                                 `json:"type"`
-			} `json:"buildOptions"`
-			DisplayName          string `json:"displayName"`
-			FrameworkId          string `json:"frameworkId"`
-			Icon                 string `json:"icon"`
-			InitializationNotice *struct {
-				Message *string     `json:"message,omitempty"`
-				Title   string      `json:"title"`
-				Type    interface{} `json:"type"`
-			} `json:"initializationNotice,omitempty"`
-			ResourceTemplates []struct {
-				Description string  `json:"description"`
-				DisplayName string  `json:"displayName"`
-				MemoryMb    float32 `json:"memoryMb"`
-				MilliCpu    float32 `json:"milliCpu"`
-				StorageMb   float32 `json:"storageMb"`
-			} `json:"resourceTemplates"`
-		} `json:"data"`
+		Data []Framework `json:"data"`
 	}
 }
 
@@ -4712,32 +3390,7 @@ func (r FrameworkListResponse) ContentType() string {
 type FrameworkGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		BuildOptions []struct {
-			BuildOptionId string                                                `json:"buildOptionId"`
-			Default       *FrameworkGet200JSONResponseBody_BuildOptions_Default `json:"default,omitempty"`
-			Description   string                                                `json:"description"`
-			Enum          *[]string                                             `json:"enum,omitempty"`
-			Name          string                                                `json:"name"`
-			Required      bool                                                  `json:"required"`
-			Type          interface{}                                           `json:"type"`
-		} `json:"buildOptions"`
-		DisplayName          string `json:"displayName"`
-		FrameworkId          string `json:"frameworkId"`
-		Icon                 string `json:"icon"`
-		InitializationNotice *struct {
-			Message *string     `json:"message,omitempty"`
-			Title   string      `json:"title"`
-			Type    interface{} `json:"type"`
-		} `json:"initializationNotice,omitempty"`
-		ResourceTemplates []struct {
-			Description string  `json:"description"`
-			DisplayName string  `json:"displayName"`
-			MemoryMb    float32 `json:"memoryMb"`
-			MilliCpu    float32 `json:"milliCpu"`
-			StorageMb   float32 `json:"storageMb"`
-		} `json:"resourceTemplates"`
-	}
+	JSON200      *Framework
 }
 
 // Status returns HTTPResponse.Status
@@ -4768,37 +3421,7 @@ type ProjectListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Data []struct {
-			ActivePreviewEnvironments float32 `json:"activePreviewEnvironments"`
-			BasePath                  *string `json:"basePath,omitempty"`
-			BuildParameters           *[]struct {
-				Key   string                                                     `json:"key"`
-				Value *ProjectList200JSONResponseBody_Data_BuildParameters_Value `json:"value,omitempty"`
-			} `json:"buildParameters,omitempty"`
-			ConnectorInstanceId  *ProjectList200JSONResponseBody_Data_ConnectorInstanceId  `json:"connectorInstanceId,omitempty"`
-			CreatedAt            ProjectList200JSONResponseBody_Data_CreatedAt             `json:"createdAt"`
-			DisplayName          string                                                    `json:"displayName"`
-			Enabled              bool                                                      `json:"enabled"`
-			Framework            string                                                    `json:"framework"`
-			GithubInstallationId *ProjectList200JSONResponseBody_Data_GithubInstallationId `json:"githubInstallationId,omitempty"`
-			Port                 *float32                                                  `json:"port,omitempty"`
-			PreviewResourceLimit struct {
-				Cpu    float32 `json:"cpu"`
-				Memory float32 `json:"memory"`
-			} `json:"previewResourceLimit"`
-			ProductionBranch        *string `json:"productionBranch,omitempty"`
-			ProductionResourceLimit struct {
-				Cpu    float32 `json:"cpu"`
-				Memory float32 `json:"memory"`
-			} `json:"productionResourceLimit"`
-			ProjectId  string   `json:"projectId"`
-			Replicas   *float32 `json:"replicas,omitempty"`
-			Repository string   `json:"repository"`
-			Slug       string   `json:"slug"`
-			TargetType *string  `json:"targetType,omitempty"`
-			UserId     string   `json:"userId"`
-			UserName   string   `json:"userName"`
-		} `json:"data"`
+		Data []ProjectListItem `json:"data"`
 	}
 }
 
@@ -4890,36 +3513,7 @@ func (r ProjectDeleteResponse) ContentType() string {
 type ProjectGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		ActivePreviewEnvironments float32 `json:"activePreviewEnvironments"`
-		BasePath                  *string `json:"basePath,omitempty"`
-		BuildParameters           *[]struct {
-			Key   string                                               `json:"key"`
-			Value *ProjectGet200JSONResponseBody_BuildParameters_Value `json:"value,omitempty"`
-		} `json:"buildParameters,omitempty"`
-		ConnectorInstanceId  *ProjectGet200JSONResponseBody_ConnectorInstanceId  `json:"connectorInstanceId,omitempty"`
-		CreatedAt            ProjectGet200JSONResponseBody_CreatedAt             `json:"createdAt"`
-		DisplayName          string                                              `json:"displayName"`
-		Enabled              bool                                                `json:"enabled"`
-		Framework            string                                              `json:"framework"`
-		GithubInstallationId *ProjectGet200JSONResponseBody_GithubInstallationId `json:"githubInstallationId,omitempty"`
-		Port                 *float32                                            `json:"port,omitempty"`
-		PreviewResourceLimit struct {
-			Cpu    float32 `json:"cpu"`
-			Memory float32 `json:"memory"`
-		} `json:"previewResourceLimit"`
-		ProductionBranch        *string `json:"productionBranch,omitempty"`
-		ProductionResourceLimit struct {
-			Cpu    float32 `json:"cpu"`
-			Memory float32 `json:"memory"`
-		} `json:"productionResourceLimit"`
-		ProjectId  string   `json:"projectId"`
-		Replicas   *float32 `json:"replicas,omitempty"`
-		Repository string   `json:"repository"`
-		Slug       string   `json:"slug"`
-		TargetType *string  `json:"targetType,omitempty"`
-		UserId     string   `json:"userId"`
-	}
+	JSON200      *ProjectWithCounts
 }
 
 // Status returns HTTPResponse.Status
@@ -4979,16 +3573,7 @@ type ProjectAclListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Data []struct {
-			CreatedAt ProjectAclList200JSONResponseBody_Data_CreatedAt `json:"createdAt"`
-			ProjectId string                                           `json:"projectId"`
-			Role      interface{}                                      `json:"role"`
-			UpdatedAt ProjectAclList200JSONResponseBody_Data_UpdatedAt `json:"updatedAt"`
-			UserEmail string                                           `json:"userEmail"`
-			UserId    string                                           `json:"userId"`
-			UserImage string                                           `json:"userImage"`
-			UserName  string                                           `json:"userName"`
-		} `json:"data"`
+		Data []ProjectAcl `json:"data"`
 	}
 }
 
@@ -5081,16 +3666,7 @@ func (r ProjectAclDeleteResponse) ContentType() string {
 type ProjectAclGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		CreatedAt ProjectAclGet200JSONResponseBody_CreatedAt `json:"createdAt"`
-		ProjectId string                                     `json:"projectId"`
-		Role      interface{}                                `json:"role"`
-		UpdatedAt ProjectAclGet200JSONResponseBody_UpdatedAt `json:"updatedAt"`
-		UserEmail string                                     `json:"userEmail"`
-		UserId    string                                     `json:"userId"`
-		UserImage string                                     `json:"userImage"`
-		UserName  string                                     `json:"userName"`
-	}
+	JSON200      *ProjectAcl
 }
 
 // Status returns HTTPResponse.Status
@@ -5150,13 +3726,7 @@ type ProjectEnvironmentsListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Environments []struct {
-			Branch     string `json:"branch"`
-			Enabled    bool   `json:"enabled"`
-			Id         string `json:"id"`
-			Production bool   `json:"production"`
-			ProjectId  string `json:"projectId"`
-		} `json:"environments"`
+		Environments []Environment `json:"environments"`
 	}
 }
 
@@ -5217,27 +3787,7 @@ type ProjectEnvironmentsDeploymentsListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Deployments []struct {
-			BuildFinishedAt    ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt  `json:"buildFinishedAt"`
-			BuildStartedAt     ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt   `json:"buildStartedAt"`
-			CancelledAt        ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt      `json:"cancelledAt"`
-			CommitMessage      ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage    `json:"commitMessage"`
-			CommitSha          string                                                                             `json:"commitSha"`
-			CommitUrl          ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl        `json:"commitUrl"`
-			CorrelationId      ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId    `json:"correlationId"`
-			CreatedAt          time.Time                                                                          `json:"createdAt"`
-			DefaultDomain      ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain    `json:"defaultDomain"`
-			DeployFinishedAt   ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt `json:"deployFinishedAt"`
-			DeployStartedAt    ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt  `json:"deployStartedAt"`
-			DisabledAt         ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt       `json:"disabledAt"`
-			EnvironmentId      string                                                                             `json:"environmentId"`
-			GithubDeploymentId string                                                                             `json:"githubDeploymentId"`
-			Id                 string                                                                             `json:"id"`
-			Image              ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image            `json:"image"`
-			Primary            bool                                                                               `json:"primary"`
-			State              interface{}                                                                        `json:"state"`
-			UpdatedAt          ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt        `json:"updatedAt"`
-		} `json:"deployments"`
+		Deployments []Deployment `json:"deployments"`
 	}
 }
 
@@ -5356,11 +3906,7 @@ type ProjectEnvironmentsDomainsListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Domains []struct {
-			Default       bool   `json:"default"`
-			EnvironmentId string `json:"environmentId"`
-			Name          string `json:"name"`
-		} `json:"domains"`
+		Domains []Domain `json:"domains"`
 	}
 }
 
@@ -5486,7 +4032,7 @@ type ProjectVariablesDeleteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Deleted float32 `json:"deleted"`
+		Deleted int `json:"deleted"`
 	}
 }
 
@@ -5518,12 +4064,7 @@ type ProjectVariablesListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Variables []struct {
-			EnvironmentId ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId `json:"environmentId"`
-			Name          string                                                          `json:"name"`
-			Value         string                                                          `json:"value"`
-			VariableId    *string                                                         `json:"variableId,omitempty"`
-		} `json:"variables"`
+		Variables []Variable `json:"variables"`
 	}
 }
 
@@ -5555,8 +4096,8 @@ type ProjectVariablesUpsertResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Created float32 `json:"created"`
-		Updated float32 `json:"updated"`
+		Created int `json:"created"`
+		Updated int `json:"updated"`
 	}
 }
 
@@ -5588,19 +4129,7 @@ type UserListResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Data []struct {
-			AcceptedTerms bool   `json:"acceptedTerms"`
-			Blocked       bool   `json:"blocked"`
-			Email         string `json:"email"`
-			Image         string `json:"image"`
-			Installations []struct {
-				GithubInstallationId float32 `json:"githubInstallationId"`
-			} `json:"installations"`
-			Name                 string                                                `json:"name"`
-			Role                 interface{}                                           `json:"role"`
-			StripeSubscriptionId UserList200JSONResponseBody_Data_StripeSubscriptionId `json:"stripeSubscriptionId"`
-			UserId               string                                                `json:"userId"`
-		} `json:"data"`
+		Data []User `json:"data"`
 	}
 }
 
@@ -5631,19 +4160,7 @@ func (r UserListResponse) ContentType() string {
 type UserMeResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		AcceptedTerms bool   `json:"acceptedTerms"`
-		Blocked       bool   `json:"blocked"`
-		Email         string `json:"email"`
-		Image         string `json:"image"`
-		Installations []struct {
-			GithubInstallationId float32 `json:"githubInstallationId"`
-		} `json:"installations"`
-		Name                 string                                         `json:"name"`
-		Role                 interface{}                                    `json:"role"`
-		StripeSubscriptionId UserMe200JSONResponseBody_StripeSubscriptionId `json:"stripeSubscriptionId"`
-		UserId               string                                         `json:"userId"`
-	}
+	JSON200      *User
 }
 
 // Status returns HTTPResponse.Status
@@ -5712,19 +4229,7 @@ func (r UserSearchResponse) ContentType() string {
 type UserGetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		AcceptedTerms bool   `json:"acceptedTerms"`
-		Blocked       bool   `json:"blocked"`
-		Email         string `json:"email"`
-		Image         string `json:"image"`
-		Installations []struct {
-			GithubInstallationId float32 `json:"githubInstallationId"`
-		} `json:"installations"`
-		Name                 string                                          `json:"name"`
-		Role                 interface{}                                     `json:"role"`
-		StripeSubscriptionId UserGet200JSONResponseBody_StripeSubscriptionId `json:"stripeSubscriptionId"`
-		UserId               string                                          `json:"userId"`
-	}
+	JSON200      *User
 }
 
 // Status returns HTTPResponse.Status
@@ -6133,32 +4638,7 @@ func ParseFrameworkListResponse(rsp *http.Response) (*FrameworkListResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Data []struct {
-				BuildOptions []struct {
-					BuildOptionId string                                                      `json:"buildOptionId"`
-					Default       *FrameworkList200JSONResponseBody_Data_BuildOptions_Default `json:"default,omitempty"`
-					Description   string                                                      `json:"description"`
-					Enum          *[]string                                                   `json:"enum,omitempty"`
-					Name          string                                                      `json:"name"`
-					Required      bool                                                        `json:"required"`
-					Type          interface{}                                                 `json:"type"`
-				} `json:"buildOptions"`
-				DisplayName          string `json:"displayName"`
-				FrameworkId          string `json:"frameworkId"`
-				Icon                 string `json:"icon"`
-				InitializationNotice *struct {
-					Message *string     `json:"message,omitempty"`
-					Title   string      `json:"title"`
-					Type    interface{} `json:"type"`
-				} `json:"initializationNotice,omitempty"`
-				ResourceTemplates []struct {
-					Description string  `json:"description"`
-					DisplayName string  `json:"displayName"`
-					MemoryMb    float32 `json:"memoryMb"`
-					MilliCpu    float32 `json:"milliCpu"`
-					StorageMb   float32 `json:"storageMb"`
-				} `json:"resourceTemplates"`
-			} `json:"data"`
+			Data []Framework `json:"data"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6185,32 +4665,7 @@ func ParseFrameworkGetResponse(rsp *http.Response) (*FrameworkGetResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			BuildOptions []struct {
-				BuildOptionId string                                                `json:"buildOptionId"`
-				Default       *FrameworkGet200JSONResponseBody_BuildOptions_Default `json:"default,omitempty"`
-				Description   string                                                `json:"description"`
-				Enum          *[]string                                             `json:"enum,omitempty"`
-				Name          string                                                `json:"name"`
-				Required      bool                                                  `json:"required"`
-				Type          interface{}                                           `json:"type"`
-			} `json:"buildOptions"`
-			DisplayName          string `json:"displayName"`
-			FrameworkId          string `json:"frameworkId"`
-			Icon                 string `json:"icon"`
-			InitializationNotice *struct {
-				Message *string     `json:"message,omitempty"`
-				Title   string      `json:"title"`
-				Type    interface{} `json:"type"`
-			} `json:"initializationNotice,omitempty"`
-			ResourceTemplates []struct {
-				Description string  `json:"description"`
-				DisplayName string  `json:"displayName"`
-				MemoryMb    float32 `json:"memoryMb"`
-				MilliCpu    float32 `json:"milliCpu"`
-				StorageMb   float32 `json:"storageMb"`
-			} `json:"resourceTemplates"`
-		}
+		var dest Framework
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -6237,37 +4692,7 @@ func ParseProjectListResponse(rsp *http.Response) (*ProjectListResponse, error) 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Data []struct {
-				ActivePreviewEnvironments float32 `json:"activePreviewEnvironments"`
-				BasePath                  *string `json:"basePath,omitempty"`
-				BuildParameters           *[]struct {
-					Key   string                                                     `json:"key"`
-					Value *ProjectList200JSONResponseBody_Data_BuildParameters_Value `json:"value,omitempty"`
-				} `json:"buildParameters,omitempty"`
-				ConnectorInstanceId  *ProjectList200JSONResponseBody_Data_ConnectorInstanceId  `json:"connectorInstanceId,omitempty"`
-				CreatedAt            ProjectList200JSONResponseBody_Data_CreatedAt             `json:"createdAt"`
-				DisplayName          string                                                    `json:"displayName"`
-				Enabled              bool                                                      `json:"enabled"`
-				Framework            string                                                    `json:"framework"`
-				GithubInstallationId *ProjectList200JSONResponseBody_Data_GithubInstallationId `json:"githubInstallationId,omitempty"`
-				Port                 *float32                                                  `json:"port,omitempty"`
-				PreviewResourceLimit struct {
-					Cpu    float32 `json:"cpu"`
-					Memory float32 `json:"memory"`
-				} `json:"previewResourceLimit"`
-				ProductionBranch        *string `json:"productionBranch,omitempty"`
-				ProductionResourceLimit struct {
-					Cpu    float32 `json:"cpu"`
-					Memory float32 `json:"memory"`
-				} `json:"productionResourceLimit"`
-				ProjectId  string   `json:"projectId"`
-				Replicas   *float32 `json:"replicas,omitempty"`
-				Repository string   `json:"repository"`
-				Slug       string   `json:"slug"`
-				TargetType *string  `json:"targetType,omitempty"`
-				UserId     string   `json:"userId"`
-				UserName   string   `json:"userName"`
-			} `json:"data"`
+			Data []ProjectListItem `json:"data"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6338,36 +4763,7 @@ func ParseProjectGetResponse(rsp *http.Response) (*ProjectGetResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			ActivePreviewEnvironments float32 `json:"activePreviewEnvironments"`
-			BasePath                  *string `json:"basePath,omitempty"`
-			BuildParameters           *[]struct {
-				Key   string                                               `json:"key"`
-				Value *ProjectGet200JSONResponseBody_BuildParameters_Value `json:"value,omitempty"`
-			} `json:"buildParameters,omitempty"`
-			ConnectorInstanceId  *ProjectGet200JSONResponseBody_ConnectorInstanceId  `json:"connectorInstanceId,omitempty"`
-			CreatedAt            ProjectGet200JSONResponseBody_CreatedAt             `json:"createdAt"`
-			DisplayName          string                                              `json:"displayName"`
-			Enabled              bool                                                `json:"enabled"`
-			Framework            string                                              `json:"framework"`
-			GithubInstallationId *ProjectGet200JSONResponseBody_GithubInstallationId `json:"githubInstallationId,omitempty"`
-			Port                 *float32                                            `json:"port,omitempty"`
-			PreviewResourceLimit struct {
-				Cpu    float32 `json:"cpu"`
-				Memory float32 `json:"memory"`
-			} `json:"previewResourceLimit"`
-			ProductionBranch        *string `json:"productionBranch,omitempty"`
-			ProductionResourceLimit struct {
-				Cpu    float32 `json:"cpu"`
-				Memory float32 `json:"memory"`
-			} `json:"productionResourceLimit"`
-			ProjectId  string   `json:"projectId"`
-			Replicas   *float32 `json:"replicas,omitempty"`
-			Repository string   `json:"repository"`
-			Slug       string   `json:"slug"`
-			TargetType *string  `json:"targetType,omitempty"`
-			UserId     string   `json:"userId"`
-		}
+		var dest ProjectWithCounts
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -6410,16 +4806,7 @@ func ParseProjectAclListResponse(rsp *http.Response) (*ProjectAclListResponse, e
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Data []struct {
-				CreatedAt ProjectAclList200JSONResponseBody_Data_CreatedAt `json:"createdAt"`
-				ProjectId string                                           `json:"projectId"`
-				Role      interface{}                                      `json:"role"`
-				UpdatedAt ProjectAclList200JSONResponseBody_Data_UpdatedAt `json:"updatedAt"`
-				UserEmail string                                           `json:"userEmail"`
-				UserId    string                                           `json:"userId"`
-				UserImage string                                           `json:"userImage"`
-				UserName  string                                           `json:"userName"`
-			} `json:"data"`
+			Data []ProjectAcl `json:"data"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6491,16 +4878,7 @@ func ParseProjectAclGetResponse(rsp *http.Response) (*ProjectAclGetResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			CreatedAt ProjectAclGet200JSONResponseBody_CreatedAt `json:"createdAt"`
-			ProjectId string                                     `json:"projectId"`
-			Role      interface{}                                `json:"role"`
-			UpdatedAt ProjectAclGet200JSONResponseBody_UpdatedAt `json:"updatedAt"`
-			UserEmail string                                     `json:"userEmail"`
-			UserId    string                                     `json:"userId"`
-			UserImage string                                     `json:"userImage"`
-			UserName  string                                     `json:"userName"`
-		}
+		var dest ProjectAcl
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -6543,13 +4921,7 @@ func ParseProjectEnvironmentsListResponse(rsp *http.Response) (*ProjectEnvironme
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Environments []struct {
-				Branch     string `json:"branch"`
-				Enabled    bool   `json:"enabled"`
-				Id         string `json:"id"`
-				Production bool   `json:"production"`
-				ProjectId  string `json:"projectId"`
-			} `json:"environments"`
+			Environments []Environment `json:"environments"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6593,27 +4965,7 @@ func ParseProjectEnvironmentsDeploymentsListResponse(rsp *http.Response) (*Proje
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Deployments []struct {
-				BuildFinishedAt    ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildFinishedAt  `json:"buildFinishedAt"`
-				BuildStartedAt     ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_BuildStartedAt   `json:"buildStartedAt"`
-				CancelledAt        ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CancelledAt      `json:"cancelledAt"`
-				CommitMessage      ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitMessage    `json:"commitMessage"`
-				CommitSha          string                                                                             `json:"commitSha"`
-				CommitUrl          ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CommitUrl        `json:"commitUrl"`
-				CorrelationId      ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_CorrelationId    `json:"correlationId"`
-				CreatedAt          time.Time                                                                          `json:"createdAt"`
-				DefaultDomain      ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DefaultDomain    `json:"defaultDomain"`
-				DeployFinishedAt   ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployFinishedAt `json:"deployFinishedAt"`
-				DeployStartedAt    ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DeployStartedAt  `json:"deployStartedAt"`
-				DisabledAt         ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_DisabledAt       `json:"disabledAt"`
-				EnvironmentId      string                                                                             `json:"environmentId"`
-				GithubDeploymentId string                                                                             `json:"githubDeploymentId"`
-				Id                 string                                                                             `json:"id"`
-				Image              ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_Image            `json:"image"`
-				Primary            bool                                                                               `json:"primary"`
-				State              interface{}                                                                        `json:"state"`
-				UpdatedAt          ProjectEnvironmentsDeploymentsList200JSONResponseBody_Deployments_UpdatedAt        `json:"updatedAt"`
-			} `json:"deployments"`
+			Deployments []Deployment `json:"deployments"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6689,11 +5041,7 @@ func ParseProjectEnvironmentsDomainsListResponse(rsp *http.Response) (*ProjectEn
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Domains []struct {
-				Default       bool   `json:"default"`
-				EnvironmentId string `json:"environmentId"`
-				Name          string `json:"name"`
-			} `json:"domains"`
+			Domains []Domain `json:"domains"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6785,7 +5133,7 @@ func ParseProjectVariablesDeleteResponse(rsp *http.Response) (*ProjectVariablesD
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Deleted float32 `json:"deleted"`
+			Deleted int `json:"deleted"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6813,12 +5161,7 @@ func ParseProjectVariablesListResponse(rsp *http.Response) (*ProjectVariablesLis
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Variables []struct {
-				EnvironmentId ProjectVariablesList200JSONResponseBody_Variables_EnvironmentId `json:"environmentId"`
-				Name          string                                                          `json:"name"`
-				Value         string                                                          `json:"value"`
-				VariableId    *string                                                         `json:"variableId,omitempty"`
-			} `json:"variables"`
+			Variables []Variable `json:"variables"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6846,8 +5189,8 @@ func ParseProjectVariablesUpsertResponse(rsp *http.Response) (*ProjectVariablesU
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Created float32 `json:"created"`
-			Updated float32 `json:"updated"`
+			Created int `json:"created"`
+			Updated int `json:"updated"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6875,19 +5218,7 @@ func ParseUserListResponse(rsp *http.Response) (*UserListResponse, error) {
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Data []struct {
-				AcceptedTerms bool   `json:"acceptedTerms"`
-				Blocked       bool   `json:"blocked"`
-				Email         string `json:"email"`
-				Image         string `json:"image"`
-				Installations []struct {
-					GithubInstallationId float32 `json:"githubInstallationId"`
-				} `json:"installations"`
-				Name                 string                                                `json:"name"`
-				Role                 interface{}                                           `json:"role"`
-				StripeSubscriptionId UserList200JSONResponseBody_Data_StripeSubscriptionId `json:"stripeSubscriptionId"`
-				UserId               string                                                `json:"userId"`
-			} `json:"data"`
+			Data []User `json:"data"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -6914,19 +5245,7 @@ func ParseUserMeResponse(rsp *http.Response) (*UserMeResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			AcceptedTerms bool   `json:"acceptedTerms"`
-			Blocked       bool   `json:"blocked"`
-			Email         string `json:"email"`
-			Image         string `json:"image"`
-			Installations []struct {
-				GithubInstallationId float32 `json:"githubInstallationId"`
-			} `json:"installations"`
-			Name                 string                                         `json:"name"`
-			Role                 interface{}                                    `json:"role"`
-			StripeSubscriptionId UserMe200JSONResponseBody_StripeSubscriptionId `json:"stripeSubscriptionId"`
-			UserId               string                                         `json:"userId"`
-		}
+		var dest User
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -6987,19 +5306,7 @@ func ParseUserGetResponse(rsp *http.Response) (*UserGetResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			AcceptedTerms bool   `json:"acceptedTerms"`
-			Blocked       bool   `json:"blocked"`
-			Email         string `json:"email"`
-			Image         string `json:"image"`
-			Installations []struct {
-				GithubInstallationId float32 `json:"githubInstallationId"`
-			} `json:"installations"`
-			Name                 string                                          `json:"name"`
-			Role                 interface{}                                     `json:"role"`
-			StripeSubscriptionId UserGet200JSONResponseBody_StripeSubscriptionId `json:"stripeSubscriptionId"`
-			UserId               string                                          `json:"userId"`
-		}
+		var dest User
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
