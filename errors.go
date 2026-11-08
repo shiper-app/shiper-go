@@ -43,15 +43,6 @@ func newAPIError(operation string, statusCode int, body []byte) error {
 	}
 }
 
-func requireStatus(operation string, statusCode int, body []byte, expected ...int) error {
-	for _, code := range expected {
-		if statusCode == code {
-			return nil
-		}
-	}
-	return newAPIError(operation, statusCode, body)
-}
-
 func require2xx(operation string, statusCode int, body []byte) error {
 	if statusCode >= 200 && statusCode < 300 {
 		return nil
